@@ -144,3 +144,41 @@ function beautyCode(souceCode) {
     a.download = 'autoCoding.txt';
     a.click();
 }
+
+/**
+ * 保存文件
+ */
+function saveTemp() {
+	var html = $("#mainArea").html(); // 主体代码
+	var name = $("#tempName").val();
+	var topDomIds = []; // 存储一级dom的data-id
+	$("#mainArea").children().each(function() {
+		topDomIds.push($(this).data("id"));
+	});
+	$.ajax({
+		url: "/users/saveTemp",
+		method: "post",
+		data: {self: html, name: name, topDomIds: topDomIds.join()},
+		success: function (data) {
+			if (data.success) {
+				alert("保存成功！");
+			}
+		},
+		error() {
+		}
+	})
+
+	$.ajax({
+		url: "/users/searchTemp",
+		method: "get",
+		data: {},
+		success: function (data) {
+			debugger
+			if (data) {
+				console.log(data);
+			}
+		},
+		error() {
+		}
+	})
+}

@@ -51,14 +51,28 @@ class aheadBack {
         // 根据动作类型执行对应的动作
         switch(curAction.action) {
             case "add": // 添加
-                new Drag(curAction.self.prevObject, $(`[data-id=${curAction.parentId}]`), curAction.insertIndexArr);
-                // 子元素初始化
-                $(`[data-id=${curAction.selfId}]`).find(".autocoding-el").each(function() {
-                    new Drag($(this));
-                });
+                if (!curAction.selfId) { // 从DIY库中拖拽
+                    new Drag($(curAction.self), $("#mainArea"), []);
+                    // 子元素初始化
+                    $("#mainArea").find(".autocoding-el").each(function() {
+                        new Drag($(this));
+                    });
+                } else { // 从组件库中拖拽
+                    new Drag(curAction.self.prevObject, $(`[data-id=${curAction.parentId}]`), curAction.insertIndexArr);
+                    // 子元素初始化
+                    $(`[data-id=${curAction.selfId}]`).find(".autocoding-el").each(function() {
+                        new Drag($(this));
+                    });
+                }
                 break;
             case "remove": // 移除
-                $(`[data-id=${curAction.selfId}]`).remove();
+                if (!curAction.selfId) { // 移除模板
+                    curAction.topDomIds.split(",").map(function(id) {
+                        $(`[data-id=${id}]`).remove();
+                    });
+                } else { // 移除组件
+                    $(`[data-id=${curAction.selfId}]`).remove();
+                }
                 break;
             case "move": // 移动
                 finalInsert($(`[data-id=${curAction.selfId}]`), $(`[data-id=${curAction.parentId}]`), curAction.insertIndexArr);
