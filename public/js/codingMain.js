@@ -109,6 +109,27 @@ function searchTemp() {
 		})
 	});
 }
+
+/**
+ * 根据id查询模板
+ */
+function searchTempById(id) {
+	return new Promise(function(resolve, reject) {
+		$.ajax({
+			url: "/users/searchTempById",
+			method: "get",
+			data: {id: id},
+			success: function (data) {
+				if (Object.prototype.toString.call(data) == "[object Array]") {
+					resolve(data[0]);
+				}
+			},
+			error() {
+			}
+		})
+	});
+}
+
 /**
  * 使用说明展开/收起
  * @returns
@@ -159,6 +180,33 @@ $(document).ready(function() {
 		// var curDrag = new Drag(data);
 		// insertComponent($(curDrag.el),top, left, bottom, right, data);
 		if (data.isTemp) { // 如果是模板，则不走正常插入
+			// 根据id查询模板
+			searchTempById(data.id).then(function(curTemp) {
+				// 向操作栈中添加移除动作
+				actionStack.pushAction({
+					action: "remove",
+					topDomIds: curTemp.topDomIds,
+					type: "prev"
+				});
+				// 获取当前激活元素的data-id，默认为主编辑区
+				var curActiveId = "mainArea";
+				var insertIndexArr = [];
+				// 当前激活元素
+				var $activeComponent = $("#" + CONST_VARIABLE.MAIN_AREA).find("." + CONST_VARIABLE.STRUT_ACTIVE).eq(0);
+				if ($activeComponent.length>0) { // 若存在激活元素
+					curActiveId = $activeComponent.data("id");
+					insertIndexArr = handleInsert(top, left, bottom, right, $activeComponent);
+				}
+				// 向操作栈中添加新增动作
+				actionStack.pushAction({
+					action: "add",
+					self: curTemp.self,
+					parentId:curActiveId,
+					topDomIds: curTemp.topDomIds,
+					insertIndexArr: insertIndexArr,
+					type: "cur"
+				});
+			});
 
 		} else { // 正常组件，走正常插入
 			insertComponent(top, left, bottom, right, data);
