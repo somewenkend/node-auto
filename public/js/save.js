@@ -158,24 +158,10 @@ function saveTemp() {
 	$.ajax({
 		url: "/users/saveTemp",
 		method: "post",
-		data: {self: html, name: name, topDomIds: topDomIds.join()},
+		data: {id: guid(), self: html, name: name, topDomIds: topDomIds.join()},
 		success: function (data) {
 			if (data.success) {
 				alert("保存成功！");
-			}
-		},
-		error() {
-		}
-	})
-
-	$.ajax({
-		url: "/users/searchTemp",
-		method: "get",
-		data: {},
-		success: function (data) {
-			debugger
-			if (data) {
-				console.log(data);
 			}
 		},
 		error() {

@@ -19,72 +19,96 @@ var vm = new Vue({
 		$.getJSON("/js/components.json", function (data){
 			vm.dataList = data;
 		}).then(function() {
-			_this.$nextTick(function() {
-				$('[data-toggle="tooltip"]').tooltip();
-				// 切换边界虚线显示隐藏
-				$('#control').change(function() {
-					if ($(this).prop('checked')) {
-						$("#dashed").html('.autocoding-el{border: 1px dashed #ddd;}.autocoding-el:not(button){background: #fff; border-radius: 5px; color: #111;}');
-					} else {
-						$("#dashed").empty();
-					}
+			searchTemp().then(data => {
+				data.forEach(item => {
+					vm.dataList[1].components[0].data.push({
+						id: item.id,
+						componentName: item.name,
+						componentIcon: "fa fa-tree",
+						isTemp: true
+					});
 				});
-				
-				
-				/****************组件文件加载完再绑定****************/
-				// 结构组件和ui组件切换
-				$(".component-type a").on("click", function() {
-					$(".label-component").removeClass("active");
-					$(this).addClass("active");
-					var id = $(this).attr("data-id");
-					$(".component-container").removeClass("active");
-					$("#" + id).addClass("active");
+				_this.$nextTick(function() {
+					$('[data-toggle="tooltip"]').tooltip();
+					// 切换边界虚线显示隐藏
+					$('#control').change(function() {
+						if ($(this).prop('checked')) {
+							$("#dashed").html('.autocoding-el{border: 1px dashed #ddd;}.autocoding-el:not(button){background: #fff; border-radius: 5px; color: #111;}');
+						} else {
+							$("#dashed").empty();
+						}
+					});
+
+
+					/****************组件文件加载完再绑定****************/
+					// 结构组件和ui组件切换
+					$(".component-type a").on("click", function() {
+						$(".label-component").removeClass("active");
+						$(this).addClass("active");
+						var id = $(this).attr("data-id");
+						$(".component-container").removeClass("active");
+						$("#" + id).addClass("active");
+					});
+
+					// 组件列表切换
+					$(".component-container p").on("click", function() {
+						// var $li = $(this).closest("li");
+						// $li.siblings("li.active").find(".component-box").slideUp();
+						// $li.siblings("li.active").removeClass("active");
+						// $li.addClass("active");
+						// $li.find(".component-box").slideDown();
+
+						var $li = $(this).closest("li");
+						$li.toggleClass("active");
+						$li.find(".component-box").slideToggle();
+					});
+
+					// 给组件绑定拖拽开始事件
+					$(".component-container .component").on("dragstart", function() {
+						// 获取组件绑定的数据
+						var dataIndex = $(this).data("index").split("-");
+						var bindData = vm.dataList[dataIndex[0]].components[dataIndex[1]].data[dataIndex[2]];
+						// 将组件数据放入ev.dataTransfer
+						event.dataTransfer.setData("data", JSON.stringify(bindData));
+					});
+
+					// 给组件绑定点击事件，用点击时鼠标与组件的相对位置和来确定
+					$(".component-container .component").on("click", function() {
+						var rect = getRectPos($(this));
+						var pageX = event.pageX;
+						var pageY = event.pageY;
+						vm.dragClickPosition.top = pageY - rect.top;
+						vm.dragClickPosition.left = pageX - rect.left;
+						vm.dragClickPosition.width = rect.width;
+						vm.dragClickPosition.height = rect.height;
+					});
 				});
-				
-				// 组件列表切换
-				$(".component-container p").on("click", function() {
-					// var $li = $(this).closest("li");
-					// $li.siblings("li.active").find(".component-box").slideUp();
-					// $li.siblings("li.active").removeClass("active");
-					// $li.addClass("active");
-					// $li.find(".component-box").slideDown();
-					
-					var $li = $(this).closest("li");
-					$li.toggleClass("active");
-					$li.find(".component-box").slideToggle();
-				});
-				
-				// 给组件绑定拖拽开始事件
-				$(".component-container .component").on("dragstart", function() {
-					// 获取组件绑定的数据
-					var dataIndex = $(this).data("index").split("-");
-					var bindData = vm.dataList[dataIndex[0]].components[dataIndex[1]].data[dataIndex[2]];
-					// 将组件数据放入ev.dataTransfer
-					event.dataTransfer.setData("data", JSON.stringify(bindData));
-				});
-				
-				// 给组件绑定点击事件，用点击时鼠标与组件的相对位置和来确定
-				$(".component-container .component").on("click", function() {
-					var rect = getRectPos($(this));
-					var pageX = event.pageX;
-					var pageY = event.pageY;
-					vm.dragClickPosition.top = pageY - rect.top;
-					vm.dragClickPosition.left = pageX - rect.left;
-					vm.dragClickPosition.width = rect.width;
-					vm.dragClickPosition.height = rect.height;
-				});
-				
-				// 绑定页面标题input的keydown事件
-				$("#pageTitle").keydown(function(event){
-					 if(event.keyCode==13){
-						 createCode();     
-					 }
-			    });
 			});
+
 		});
 	}
-});			
+});
 
+/**
+ * 查询所有模板
+ * @returns {Promise<unknown>}
+ */
+function searchTemp() {
+	return new Promise(function(resolve, reject) {
+		$.ajax({
+			url: "/users/searchTemp",
+			method: "get",
+			data: {},
+			success: function (data) {
+				if (Object.prototype.toString.call(data) == "[object Array]") {
+					resolve(data);
+				}
+			},
+			error() {
+			}
+		})
+	});
+}
 /**
  * 使用说明展开/收起
  * @returns
@@ -134,7 +158,11 @@ $(document).ready(function() {
 		 
 		// var curDrag = new Drag(data);
 		// insertComponent($(curDrag.el),top, left, bottom, right, data);
-		insertComponent(top, left, bottom, right, data);
+		if (data.isTemp) { // 如果是模板，则不走正常插入
+
+		} else { // 正常组件，走正常插入
+			insertComponent(top, left, bottom, right, data);
+		}
 	});
 	// 阻止默认动作以启用drop
 	$("#mainArea").on("dragover", function() {
