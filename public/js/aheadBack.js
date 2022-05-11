@@ -52,19 +52,35 @@ class aheadBack {
         switch(curAction.action) {
             case "add": // 添加
                 if (!curAction.selfId) { // 从DIY库中拖拽
-                    // 由于DIY库中的模板可能是多个独立的dom，所以要对每一个分别插入
+                    // 由于DIY库中的模板可能是多个独立的dom，所以要对每一个分别插入，且对其下面的每一个.autocoding-el进行初始化
                     // 在第一次插入后，insertIndexArr[0]要加1，insertIndexArr[1]要变成2（即第一次插入后，需要一直在右边插入）
-                    var actualInsertArr = [curAction.insertIndexArr[0], curAction.insertIndexArr[1]];
-                    curAction.topDomIds.split(",").forEach(item, index => {
-                        var $curTop = $(curAction.self).find(`[data-id=${item}]`);
-                        new Drag($curTop, $(`[data-id=${curAction.parentId}]`), actualInsertArr);
+                    var actualInsertArr = [];
+                    if (curAction.insertIndexArr.length == 2) {
+                        actualInsertArr = [curAction.insertIndexArr[0], curAction.insertIndexArr[1]];
+                    }
+                    // curAction.topDomIds.split(",").forEach(item => {
+                    //     var $curTop = $(curAction.self).find(`[data-id=${item}]`);
+                    //     new Drag($curTop, $(`[data-id=${curAction.parentId}]`), actualInsertArr);
+                    //     // 子元素初始化
+                    //     $curTop.find(".autocoding-el").each(function() {
+                    //         new Drag($(this));
+                    //     });
+                    //     actualInsertArr[0]++;
+                    //     actualInsertArr[1] = 2;
+                    // })
+
+                    $(curAction.self).each((index,item) => {
+                        new Drag($(item), $(`[data-id=${curAction.parentId}]`), actualInsertArr);
                         // 子元素初始化
-                        $curTop.find(".autocoding-el").each(function() {
+                        $(item).find(".autocoding-el").each(function() {
                             new Drag($(this));
                         });
-                        actualInsertArr[0]++;
-                        actualInsertArr[1] = 2;
+                        if (actualInsertArr.length == 2) {
+                            actualInsertArr[0]++;
+                            actualInsertArr[1] = 2;
+                        }
                     })
+
                 } else { // 正常前进
                     new Drag(curAction.self.prevObject, $(`[data-id=${curAction.parentId}]`), curAction.insertIndexArr);
                     // 子元素初始化

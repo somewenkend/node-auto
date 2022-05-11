@@ -26,6 +26,8 @@ function createCode(){
 		$(el).removeAttr("data-type");
 		// 移除data-changesize
 		$(el).removeAttr("data-changesize");
+		// 移除data-editselector
+		$(el).removeAttr("data-editselector");
 		// 若是i-check，把input元素拎出来，同时移除中间渲染出来的代码
 		// if ($(el).hasClass("i-checks")) {
 		// 	var $input = $(el).find("input");

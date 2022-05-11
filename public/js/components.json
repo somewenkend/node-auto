@@ -28,7 +28,7 @@
 						"html": "<button type=\"button\" class=\"seracall ivu-btn ivu-btn-white\" id=\"highsearch\"><span><i class=\"iconfont iconqiehuan\"></i>高级搜索</span></button>"
 					},
 					{
-						"editSelector": "",
+						"editSelector": "input",
 						"type": 2,
 						"canChangeSize": 1,
 						"componentIcon": "fa fa-search-minus",

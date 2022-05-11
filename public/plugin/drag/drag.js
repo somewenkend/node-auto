@@ -105,6 +105,8 @@
 			$el.attr("data-type", option.type); // 保存type
 			$el.attr("data-changesize", option.canChangeSize); // 保存canChangeSize
 
+			$el.attr("data-editselector", option.editSelector); // 保存editSelector
+
 			// 保存添加动作[移除元素操作、添加元素操作]
 			// 移除元素操作
 			actionStack.pushAction({
@@ -274,10 +276,15 @@
 					document.addEventListener('mousemove', move, false);
 					document.addEventListener('mouseup', end, false);
 				} else if (event.which == 3) { // 鼠标右键点击
-					if (self.option.editSelector != "") {
+					if (self.option.editSelector && self.option.editSelector != "") {
 						window.waitEdit = $(self.el).find(self.option.editSelector);
 					} else {
-						window.waitEdit = self.el;
+						var curEditSelector = $(self.el).data("editselector");
+						if (curEditSelector) {
+							window.waitEdit = $(self.el).find(curEditSelector);
+						} else {
+							window.waitEdit = self.el;
+						}
 					}
 					// 根据组件类型定义编辑模态框中的内容
 					editComponent(self.option.componentName);

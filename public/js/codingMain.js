@@ -206,6 +206,10 @@ $(document).ready(function() {
 					insertIndexArr: insertIndexArr,
 					type: "cur"
 				});
+				// 将当前操作索引后退一步
+				--actionStack.handleIndex;
+				// 前进一步
+				actionStack.go(0);
 			});
 
 		} else { // 正常组件，走正常插入
@@ -427,7 +431,7 @@ function editComponent(componentName) {
 	// 	$effectEl = $(waitEdit).find("img");
 	// }
 	var classes = $effectEl.attr("class");
-	$("#componentClass").val(classes.replace(/autocoding-el|strut-active/g, "").trim());
+	classes?$("#componentClass").val(classes.replace(/autocoding-el|strut-active/g, "").trim()):'';
 	// 将组件当前的id属性值取出
 	var id = $effectEl.attr("id");
 	$("#componentId").val(id);
@@ -470,7 +474,7 @@ function editComponent(componentName) {
 		break;
 	};
 	// input或者textarea需要编辑placeholder属性
-	if (componentName == "文本input" || componentName == "textarea") {
+	if (componentName == "文本input" || componentName == "textarea" || componentName == "模糊搜索") {
 		var placeholderHtml = 
 			`
 				<div class="form-group">
