@@ -15,15 +15,18 @@
   <link href="/css/ace.css" rel="stylesheet" type="text/css" />
   <link href="/css/myace.css" rel="stylesheet" type="text/css" />
   <link href="/css/style.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" type="text/css" href="/plugIn/drag/drag.css" />
+  <link rel="stylesheet" type="text/css" href="/plugin/drag/drag.css" />
+  <!-- 代码高亮 -->
+  <link rel="stylesheet" type="text/css" href="/plugin/highlight/androidstudio.min.css" />
   <style>
     *{outline: none;}
     #editModal{z-index: 10000;}
-    .modal-backdrop{z-index: 9999;}
+    .modal-backdrop{z-index: 1049;}
     /*由于transform对某些内联元素不起作用，所以将b,span,strong标签display设为inline-block*/
     b,span,strong{display:inline-block;}
     /*禁止双击选中文字*/
-    * {user-select: none; -webkit-user-select: none;}
+    /** {user-select: none; -webkit-user-select: none;}*/
+    pre{padding: 0;}
     /*留下空隙*/
     .form-group.autocoding-el, .form-horizon.autocoding-el, [title="普通div"]{padding: 10px 0;}
     body{padding: 85px 0 0; background: #aaa url(/img/rainbow.jpg) repeat fixed center; background-size: 270px;}
@@ -105,7 +108,7 @@
     .autocoding-el:not(button){background: #fff;}
     .autocoding-el.none{display: block;}
     .autocoding-el.dialog.none{display: inline-block; margin: 10px;}
-    .bar6 button {
+    .cus-header .bar6 button {
       background: #5a7cfb;
       border-radius: 0 4px 4px 0;
       top: inherit;
@@ -216,6 +219,26 @@
     </div>
   </div>
 </div>
+
+<!-- 生成代码 -->
+<div class="modal fade" id="codesModal" tabindex="-1" role="dialog" aria-labelledby="codesModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <span class="f18 c111">代码</span>
+      </div>
+      <div class="modal-body">
+        <pre><code id="codesBox" class="language-html"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ivu-btn ml10" data-dismiss="modal"><i class="fa fa-circle-o-notch fa-fw mr5"></i>关闭</button>
+        <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="copyCodes()"><i class="fa fa-check mr5"></i>一键复制</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="/js/min.js"></script>
 <!-- <script type="text/javascript" src="/plugIn/toggle-master/js/bootstrap-toggle.js"></script> -->
 <script src="/js/vue.min.js"></script>
@@ -225,5 +248,7 @@
 <!--		<script src="/js/formatHTML.js"></script>-->
 <script src="/js/save.js"></script>
 <script src="/js/aheadBack.js"></script>
+<!-- 代码高亮 -->
+<script src="/plugin/highlight/highlight.min.js"></script>
 </body>
 </html>

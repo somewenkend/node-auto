@@ -140,6 +140,8 @@ function toggleUpDown() {
 
 
 $(document).ready(function() {
+	// 开启代码高亮
+	hljs.initHighlightingOnLoad();
 	// 使用说明
 	var description = `
 		<p>1、从左边组件库中拖出组件到右边主编辑区。</p>
