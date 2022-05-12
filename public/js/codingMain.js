@@ -53,7 +53,7 @@ var vm = new Vue({
 					// 切换边界虚线显示隐藏
 					$('#control').change(function() {
 						if ($(this).prop('checked')) {
-							$("#dashed").html('.autocoding-el{border: 1px dashed #ddd;}.autocoding-el:not(button){background: #fff; border-radius: 5px; color: #111;}');
+							$("#dashed").html('.autocoding-el{border: 1px dashed #eee;}.autocoding-el:not(button){background: #fff; border-radius: 5px; color: #111;}');
 						} else {
 							$("#dashed").empty();
 						}
