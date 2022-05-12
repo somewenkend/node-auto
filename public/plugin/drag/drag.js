@@ -41,7 +41,11 @@
 		var operateAddObj = {};
 		var insertIndexArr = [];
 		operateAddObj.action = "add"; // 操作类型
-		operateAddObj.parentId = curEl.closest("." + CONST_VARIABLE.AUTOCODING_EL).data("id");
+		if (curEl.parents("." + CONST_VARIABLE.AUTOCODING_EL).length > 0) {
+			operateAddObj.parentId = curEl.parents("." + CONST_VARIABLE.AUTOCODING_EL).eq(0).data("id");
+		} else {
+			operateAddObj.parentId = "mainArea";
+		}
 		operateAddObj.self = curEl.clone();
 		operateAddObj.selfId = curEl.data("id");
 		operateAddObj.type = "prev"; // 标识走这一步前的状态
