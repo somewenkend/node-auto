@@ -35,7 +35,7 @@
 						"componentName": "模糊搜索",
 						"height": "auto",
 						"dragDirect": ["t", "b"],
-						"html": "<div class=\"search ml10\"><div class=\"bar6\">\n<input type=\"text\" id=\"paramStr\" placeholder=\"产品包编号  产品包名称\">\n<button id=\"search\" class=\"ivu-btn ivu-btn-primary\" type=\"button\"> <i class=\"fa fa-search\"></i></button></div></div>"
+						"html": "<div class=\"search ml10\"><div class=\"bar6\"><input type=\"text\" id=\"paramStr\" placeholder=\"产品包编号  产品包名称\"><button id=\"search\" class=\"ivu-btn ivu-btn-primary\" type=\"button\"> <i class=\"fa fa-search\"></i></button></div></div>"
 					},
 					{
 						"editSelector": "",
@@ -51,22 +51,20 @@
 					{
 						"editSelector": "",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "fa fa-plus-square",
 						"componentName": "实心按钮",
-						"height": 54,
-						"minWidth": 100,
+						"height": "auto",
 						"dragDirect": ["t", "b"],
 						"html": "<button type=\"button\" class=\"ivu-btn ivu-btn-primary\"><span>新增</span></button>"
 					},
 					{
 						"editSelector": "",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "fa fa-plus-square-o",
 						"componentName": "空心按钮",
-						"height": 54,
-						"minWidth": 100,
+						"height": "auto",
 						"dragDirect": ["t", "b"],
 						"html": "<button type=\"button\" class=\"ivu-btn\"><span>锁定</span></button>"
 					}
@@ -81,7 +79,7 @@
 						"type": 1,
 						"canChangeSize": 1,
 						"componentIcon": "fa fa fa-file-text-o",
-						"componentName": "搜索表单",
+						"componentName": "高级搜索表单",
 						"height": 150,
 						"dragDirect": ["t", "b"],
 						"html": "<form class=\"form-all serch-form row none\" id=\"searchForm\"></form>"

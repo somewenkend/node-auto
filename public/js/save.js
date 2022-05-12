@@ -80,7 +80,9 @@ var frame = `<!DOCTYPE html>
 </html>
 `;
 
-		var beautyHtmlStr = html_beautify(frame); // 美化后的代码
+		var beautyHtmlStr = html_beautify(frame, {
+			inline: ["span", "i"]
+		}); // 美化后的代码
 		// 将美化后的代码移入代码模态框中，并高亮之
 		$("#codesBox").text(beautyHtmlStr);
 		hljs.highlightElement($("#codesBox")[0]);

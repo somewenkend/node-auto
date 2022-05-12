@@ -530,7 +530,9 @@ function ensureAttr() {
 	
 	// 确认其他属性
 	$("#extraAttr").children().each(function() {
-		$effectEl.attr($(this).find("input").data("attr"), $(this).find("input").val());
+		if ($(this).find("input").val().trim()) {
+			$effectEl.attr($(this).find("input").data("attr"), $(this).find("input").val());
+		}
 	});
 	// 关闭模态框
 	$("#editModal").modal("hide");

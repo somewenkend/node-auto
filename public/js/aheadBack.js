@@ -69,7 +69,7 @@ class aheadBack {
                     //     actualInsertArr[1] = 2;
                     // })
 
-                    $(curAction.self).each((index,item) => {
+                    $("<div>"+curAction.self+"</div>").children().not(".drag-box").each((index,item) => {
                         new Drag($(item), $(`[data-id=${curAction.parentId}]`), actualInsertArr);
                         // 子元素初始化
                         $(item).find(".autocoding-el").each(function() {
