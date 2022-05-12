@@ -30,7 +30,7 @@
 	window.removeEl = function(el) {
 		// 通过style设置元素的尺寸，以保证前进后退时，能得到最新的元素尺寸
 		var curEl = $(el).closest("." + CONST_VARIABLE.AUTOCODING_EL);
-		curEl.css({"height": curEl.height(), "width": curEl.width()});
+		curEl.css({"height": curEl[0].offsetHeight, "width": curEl[0].offsetWidth});
 		curEl.find("." + CONST_VARIABLE.AUTOCODING_EL).each(function() {
 			$(this).css({"height": curEl.height(), "width": curEl.width()});
 		});

@@ -451,7 +451,7 @@ function editComponent(componentName) {
 			`
 				<div class="form-group">
 			        <label>组件name：</label>
-			        <input class="form-control" data-attr="name" placeholder="请输入组件name" />
+			        <input class="form-control ivu-input" type="text" data-attr="name" placeholder="请输入组件name" />
 			    </div>
 	        `;
         $("#extraAttr").append(nameHtml);
@@ -465,7 +465,7 @@ function editComponent(componentName) {
 			`
 			<div class="form-group">
 				<label>组件lay-filter：</label>
-				<input class="form-control" data-attr="lay-filter" placeholder="请输入组件lay-filter" />
+				<input class="form-control ivu-input" type="text" data-attr="lay-filter" placeholder="请输入组件lay-filter" />
 			</div>
 		`;
 		$("#extraAttr").append(filterHtml);
@@ -481,7 +481,7 @@ function editComponent(componentName) {
 			`
 				<div class="form-group">
 			        <label>组件placeholder：</label>
-			        <input class="form-control" data-attr="placeholder" placeholder="请输入组件placeholder" />
+			        <input class="form-control ivu-input" type="text" data-attr="placeholder" placeholder="请输入组件placeholder" />
 			    </div>
 	        `;
 	        $("#extraAttr").append(placeholderHtml);

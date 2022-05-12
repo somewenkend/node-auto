@@ -18,6 +18,7 @@
   <link rel="stylesheet" type="text/css" href="/plugin/drag/drag.css" />
   <!-- 代码高亮 -->
   <link rel="stylesheet" type="text/css" href="/plugin/highlight/androidstudio.min.css" />
+<!--  <link rel="stylesheet" type="text/css" href="/plugin/highlight/monokai-sublime.min.css" />-->
   <style>
     *{outline: none;}
     #editModal{z-index: 10000;}
@@ -26,7 +27,7 @@
     b,span,strong{display:inline-block;}
     /*禁止双击选中文字*/
     /** {user-select: none; -webkit-user-select: none;}*/
-    pre{padding: 0;}
+    pre{padding: 0; max-height: calc(100vh - 200px); overflow-y: auto; margin: 0}
     /*留下空隙*/
     .form-group.autocoding-el, .form-horizon.autocoding-el, [title="普通div"]{padding: 10px 0;}
     body{padding: 85px 0 0; background: #aaa url(/img/rainbow.jpg) repeat fixed center; background-size: 270px;}
@@ -123,6 +124,9 @@
         width: 1400px;
       }
     }
+    .modal-header .close {
+       font-size: 21px;
+    }
 
   </style>
 </head>
@@ -204,16 +208,16 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-        <span class="f18 c111"><span id="componentName" class="cc00"></span>属性编辑</span>
+        <span class="f18 c111">《<span id="componentName"></span>》属性编辑</span>
       </div>
       <div class="modal-body">
         <div class="form-group">
           <label>组件id：</label>
-          <input class="form-control" id="componentId" placeholder="请输入组件id" />
+          <input class="form-control ivu-input" id="componentId" type="text" placeholder="请输入组件id" />
         </div>
         <div class="form-group">
           <label>组件class(用空格隔开)：</label>
-          <input class="form-control" id="componentClass" placeholder="请输入组件class" />
+          <input class="form-control ivu-input" id="componentClass" type="text" placeholder="请输入组件class" />
         </div>
         <div id="extraAttr">
         </div>
@@ -239,7 +243,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="ivu-btn ml10" data-dismiss="modal"><i class="fa fa-circle-o-notch fa-fw mr5"></i>关闭</button>
-        <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="copyCodes()"><i class="fa fa-check mr5"></i>一键复制</button>
+        <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="copyCodes()"><i class="fa fa-copy mr5"></i>一键复制</button>
       </div>
     </div>
   </div>

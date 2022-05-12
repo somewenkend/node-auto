@@ -35,7 +35,7 @@
 						"componentName": "模糊搜索",
 						"height": "auto",
 						"dragDirect": ["t", "b"],
-						"html": "<div class=\"search ml10\"><div class=\"bar6\"><input type=\"text\" id=\"paramStr\" placeholder=\"产品包编号  产品包名称\"><button id=\"search\" class=\"ivu-btn ivu-btn-primary\" type=\"button\"> <i class=\"fa fa-search\"></i></button></div></div>"
+						"html": "<div class=\"search ml10\"><div class=\"bar6\">\n<input type=\"text\" id=\"paramStr\" placeholder=\"产品包编号  产品包名称\">\n<button id=\"search\" class=\"ivu-btn ivu-btn-primary\" type=\"button\"> <i class=\"fa fa-search\"></i></button></div></div>"
 					},
 					{
 						"editSelector": "",

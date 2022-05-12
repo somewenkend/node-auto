@@ -32,16 +32,15 @@ function createCode(){
 		$(el).removeAttr("data-editselector");
 	});
 	
-	if ($htmlStr.html() != "") {
+	if ($htmlStr.html().trim() != "") {
 
 
-var frame = `
-<!DOCTYPE html>
+var frame = `<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta charset="utf-8" />
-	<title><%=init_title %></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title><%=init_title %></title>
 <meta name="description" content="overview &amp; stats" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <%- include("../../inc/inc_add.html") %>
@@ -49,31 +48,31 @@ var frame = `
 <body>
 <!-- 主容器start -->
 <div class="main-container ace-save-state" id="main-container">
-	<script type="text/javascript">
-		try {
-			ace.settings.loadState('main-container')
-		} catch (e) { }
-	</script>
-	<!-- 侧边栏 start-->
-	<%- include("../../inc/sidebar.html") %>
-	<!-- 侧边栏end -->
-	<!-- 主体start-->
-	<div class="main-content">
-		<!-- 导航栏start -->
-		<%- include("../../inc/navbar.html") %>
-		<!-- 导航栏end -->
-		<div class="main-content-inner">
-			<!--页面内容start-->
-			<div class="page-content">
-				<div class="page-cont-body pdt25">${$htmlStr.html()}</div>
-			</div>
-		</div>
-	</div>
-	<!--返回顶部 start-->
-	<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-		<i class="fa fa-angle-double-up icon-only bigger-110"></i>
-	</a>
-	<!--返回顶部 end-->
+    <script type="text/javascript">
+        try { 
+            ace.settings.loadState('main-container') 
+        } catch (e) { }
+    </script>
+    <!-- 侧边栏 start-->
+    <%- include("../../inc/sidebar.html") %>
+    <!-- 侧边栏end -->
+    <!-- 主体start-->
+    <div class="main-content">
+        <!-- 导航栏start -->
+        <%- include("../../inc/navbar.html") %>
+        <!-- 导航栏end -->
+        <div class="main-content-inner">
+            <!--页面内容start-->
+            <div class="page-content">
+                <div class="page-cont-body pdt25">${$htmlStr.html().replace("\n", '')}</div>
+            </div>
+        </div>
+    </div>
+    <!--返回顶部 start-->
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+    <!--返回顶部 end-->
 </div>
 <script>
 </script>
@@ -81,12 +80,22 @@ var frame = `
 </html>
 `;
 
-		// 将生成的代码移入代码模态框中，并高亮之
-		$("#codesBox").text(html_beautify(frame));
+		var beautyHtmlStr = html_beautify(frame); // 美化后的代码
+		// 将美化后的代码移入代码模态框中，并高亮之
+		$("#codesBox").text(beautyHtmlStr);
 		hljs.highlightElement($("#codesBox")[0]);
 		// 打开模态框
 		$("#codesModal").modal("show");
-		console.log(html_beautify(frame));
+
+		copyCodes = function() {
+			var clipboardObj = navigator.clipboard;
+			if(clipboardObj) {
+				clipboardObj.writeText(beautyHtmlStr).then(function() {
+					alert("复制成功！");
+				})
+			}
+		}
+		console.log(beautyHtmlStr);
 	} else {
 		alert("无代码可生成！");
 	}
@@ -106,7 +115,7 @@ function beautyCode(souceCode) {
 }
 
 /**
- * 保存文件
+ * 保存模板
  */
 function saveTemp() {
 	var html = $("#mainArea").html(); // 主体代码
@@ -128,3 +137,8 @@ function saveTemp() {
 		}
 	})
 }
+
+/**
+ * 一键复制
+ */
+function copyCodes() {}
