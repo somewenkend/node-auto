@@ -76,7 +76,7 @@
       padding: 7px;
       cursor: pointer;
     }
-    .component-container .component-box .component span{overflow: hidden; display: -webkit-box; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 1;}
+    .component-container .component-box .component span{overflow: hidden; display: -webkit-box; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 1; font-size: 12px;}
     .component-container .component-box .component:hover{background-color: #f1f1f1;}
     .component-container .component-box .component i {
       font-size: 18px;
@@ -121,13 +121,34 @@
     }
     @media (min-width: 1600px){
       .modal-lg {
-        width: 1400px;
+        width: 1100px;
       }
     }
     .modal-header .close {
        font-size: 21px;
     }
 
+    /*DIY库模板删除按钮样式*/
+    .component-box .col-lg-4.col-md-6{overflow: hidden;}
+    span.del-temp{
+      background-color: #fff;
+      width: 21px;
+      height: 21px;
+      line-height: 20px;
+      text-align: center;
+      border-radius: 11px 0 11px 11px;
+      cursor: pointer;
+      color: #a70000;
+      font-size: 18px;
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      transition: all 0.1s;
+      transform: translateY(-21px);
+    }
+    .component-box .col-lg-4.col-md-6:hover > span.del-temp{
+      transform: translateY(0);
+    }
   </style>
 </head>
 <!-- 主编辑区域 -->
@@ -139,7 +160,7 @@
 <div class="header cus-header">
   <div class="fr">
     <label class="checkbox" style="display: inline-flex; margin: 8px 0;">
-      <span>显示组件位置虚线：</span>
+      <span>显示组件边界虚线：</span>
       <input type="checkbox" id="control" checked="checked" />
     </label>
     <div class="bar6" style="display: inline-flex;">
@@ -178,9 +199,13 @@
               <p class="component-title"><i :class="['mr5', itemC.icon]"></i>{{itemC.name}}</p>
               <div :class="{'component-box':true}">
                 <div class="row">
-                  <div v-for="(itemCC, indexCC) in itemC.data" :key="indexCC" class="col-lg-4 col-md-6">
+                  <div v-for="(itemCC, indexCC) in itemC.data" :key="indexCC" class="col-lg-4 col-md-6" data-toggle="tooltip" :data-original-title="itemCC.componentName">
+                    <!-- 只有DIY库的模板有移除功能 -->
+                    <span v-if="index==1" class="del-temp" @click="delTemp(itemCC.id, indexCC)">
+                      <i class="fa fa-times-circle"></i>
+                    </span>
                     <!-- data-index标识了此dom元素对应的组件数据 -->
-                    <div class="component" draggable="true" :data-index="index+'-'+indexC+'-'+indexCC" data-toggle="tooltip" :data-original-title="itemCC.componentName">
+                    <div class="component" draggable="true" :data-index="index+'-'+indexC+'-'+indexCC">
                       <i :class="[itemCC.componentIcon, 'f18']"></i>
                       <span class="f12">{{itemCC.componentName}}</span>
                     </div>

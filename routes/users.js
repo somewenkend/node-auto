@@ -29,7 +29,6 @@ router.post('/saveTemp', async function(req, res, next) {
 router.get('/searchTemp', async function(req, res, next) {
   var conn = null;
   try {
-    var myobj = { name: req.body.name, topDomIds: req.body.topDomIds, self: req.body.self};
     var conn = await MongoClient.connect(url);
     var temp = conn.db("Autocoding").collection("temp");
     var arr = await temp.find().toArray();
@@ -45,7 +44,6 @@ router.get('/searchTemp', async function(req, res, next) {
 router.get('/searchTempById', async function(req, res, next) {
   var conn = null;
   try {
-    var myobj = { name: req.body.name, topDomIds: req.body.topDomIds, self: req.body.self};
     var conn = await MongoClient.connect(url);
     var temp = conn.db("Autocoding").collection("temp");
     var arr = await temp.find({"id": req.query.id}).toArray();
@@ -58,17 +56,18 @@ router.get('/searchTempById', async function(req, res, next) {
 });
 
 // 删除mongo
-router.post('/deleteTemp', function(req, res, next) {
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("Autocoding");
-    var myobj = { name: req.body.name, topDomIds: req.body.topDomIds, self: req.body.self};
-    dbo.collection("temp").insertOne(myobj, function(err, result) {
-      if (err) throw err;
-      res.send({success: true});
-      db.close();
-    });
-  });
+router.post('/deleteTemp', async function(req, res, next) {
+  var conn = null;
+  try {
+    var conn = await MongoClient.connect(url);
+    var temp = conn.db("Autocoding").collection("temp");
+    await temp.deleteMany({"id": req.body.id});
+    res.send({success: true});
+  } catch(err) {
+    console.log("错误：" + err.message);
+  } finally {
+    conn?conn.close():'';
+  }
 });
 
 module.exports = router;

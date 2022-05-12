@@ -13,6 +13,26 @@ var vm = new Vue({
 		// 是否展示组件边界虚线
 		isShowDashed: true
 	},
+	methods: {
+		delTemp(id, index) { // 删除DIY库的模板
+			if (confirm("确定要删除？")) {
+				$.ajax({
+					url: "/users/deleteTemp",
+					method: "post",
+					data: {id: id},
+					success: function (data) {
+						if (data.success) {
+							// 移除页面数组中元素
+							vm.dataList[1].components[0].data.splice(index, 1);
+							alert("删除成功！");
+						}
+					},
+					error() {
+					}
+				})
+			}
+		}
+	},
 	mounted: function() {
 		var _this = this;
 		// ajax
@@ -517,11 +537,7 @@ function ensureAttr() {
 	if (curClasses.trim() != "") {
 		$effectEl.attr("class", curClasses);
 	}
-	// 若是图片则把图片的class在附加到父容器上
-	if ($(waitEdit).hasClass("img-box")) {
-		$(waitEdit).addClass(curClasses);
-	}
-	
+
 	// 确认id
 	var curId = $("#componentId").val();
 	if (curId.trim() != "") {

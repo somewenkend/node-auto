@@ -12,6 +12,9 @@ function createCode(){
 		}
 		// 移除autocoding-el class
 		$(el).removeClass("autocoding-el");
+		if (!$(el).attr("class").trim()) {
+			$(el).removeAttr("class");
+		}
 		// 移除style属性
 		$(el).removeAttr("style");
 		// 移除contentEditable属性
@@ -81,7 +84,7 @@ var frame = `<!DOCTYPE html>
 `;
 
 		var beautyHtmlStr = html_beautify(frame, {
-			inline: ["span", "i"]
+			inline: ["i"]
 		}); // 美化后的代码
 		// 将美化后的代码移入代码模态框中，并高亮之
 		$("#codesBox").text(beautyHtmlStr);
@@ -126,6 +129,10 @@ function saveTemp() {
 	$("#mainArea").children().each(function() {
 		topDomIds.push($(this).data("id"));
 	});
+	if (name.trim() == "") {
+		alert("模板名称不能为空！");
+		return;
+	}
 	$.ajax({
 		url: "/users/saveTemp",
 		method: "post",

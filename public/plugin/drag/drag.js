@@ -34,8 +34,6 @@
 		curEl.find("." + CONST_VARIABLE.AUTOCODING_EL).each(function() {
 			$(this).css({"height": curEl.height(), "width": curEl.width()});
 		});
-		// 设置尺寸后移除元素
-		curEl.remove();
 		// 移除后创建操作对象并将移除操作对象添加进操作栈[添加元素操作、移除元素操作]
 		// 添加元素操作
 		var operateAddObj = {};
@@ -62,6 +60,9 @@
 			type: "cur" // 标识走完这一步的当前状态
 		};
 		actionStack.pushAction(operateRemoveObj);
+
+		// 最后移除元素
+		curEl.remove();
 	}
     
     /**
