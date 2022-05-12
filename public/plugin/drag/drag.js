@@ -292,7 +292,7 @@
 						}
 					}
 					// 根据组件类型定义编辑模态框中的内容
-					editComponent(self.option.componentName);
+					editComponent(self.option.componentName || $(self.el).attr("title"));
 				}
             }
 
