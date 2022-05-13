@@ -208,7 +208,7 @@
 		left: 0;
 		z-index: 10;
 		box-shadow: none;
-		font-size: 12px;
+		/*font-size: 12px;*/
 		cursor: move;
 		transition: none!important;
 	}

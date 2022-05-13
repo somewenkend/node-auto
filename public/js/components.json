@@ -207,7 +207,7 @@
 				"icon": "fa fa-hand-o-right fa-fw",
 				"data": [
 					{
-						"type": 0,
+						"type": 2,
 						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-label",
 						"componentName": "label标签",
@@ -216,7 +216,7 @@
 						"html": "<label>一个label标签</label>"
 					},
 					{
-						"type": 0,
+						"type": 2,
 						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-rectangle",
 						"componentName": "span标签",
@@ -225,7 +225,7 @@
 						"html": "<span>一个span标签</span>"
 					},
 					{
-						"type": 0,
+						"type": 2,
 						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-paragraph",
 						"componentName": "p标签",
@@ -234,7 +234,7 @@
 						"html": "<p>一个p标签</p>"
 					},
 					{
-						"type": 0,
+						"type": 2,
 						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-h",
 						"componentName": "h1标签",
@@ -243,7 +243,7 @@
 						"html": "<h1>一个h1标签</h1>"
 					},
 					{
-						"type": 0,
+						"type": 2,
 						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-cuti",
 						"componentName": "b标签",
@@ -252,7 +252,7 @@
 						"html": "<b>一个b标签</b>"
 					},
 					{
-						"type": 0,
+						"type": 2,
 						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-S_round",
 						"componentName": "strong标签",
