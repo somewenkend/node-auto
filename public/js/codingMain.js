@@ -44,7 +44,7 @@ var vm = new Vue({
 					vm.dataList[1].components[0].data.push({
 						id: item.id,
 						componentName: item.name,
-						componentIcon: "fa fa-tree",
+						componentIcon: "fa fa-linode",
 						isTemp: true
 					});
 				});
