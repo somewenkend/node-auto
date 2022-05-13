@@ -36,9 +36,9 @@ var vm = new Vue({
 	mounted: function() {
 		var _this = this;
 		// ajax
-		$.getJSON("/js/components.json", function (data){
+		$.getJSON("/js/components.json", function (data) {
 			vm.dataList = data;
-		}).then(function() {
+		}).then(function () {
 			searchTemp().then(data => {
 				data.forEach(item => {
 					vm.dataList[1].components[0].data.push({
@@ -48,10 +48,10 @@ var vm = new Vue({
 						isTemp: true
 					});
 				});
-				_this.$nextTick(function() {
+				_this.$nextTick(function () {
 					$('[data-toggle="tooltip"]').tooltip();
 					// 切换边界虚线显示隐藏
-					$('#control').change(function() {
+					$('#control').change(function () {
 						if ($(this).prop('checked')) {
 							$("#dashed").html('.autocoding-el{border: 1px dashed #eee;}.autocoding-el:not(button){background: #fff; border-radius: 5px; color: #111;}');
 						} else {
@@ -62,7 +62,7 @@ var vm = new Vue({
 
 					/****************组件文件加载完再绑定****************/
 					// 结构组件和ui组件切换
-					$(".component-type a").on("click", function() {
+					$(".component-type a").on("click", function () {
 						$(".label-component").removeClass("active");
 						$(this).addClass("active");
 						var id = $(this).attr("data-id");
@@ -71,7 +71,7 @@ var vm = new Vue({
 					});
 
 					// 组件列表切换
-					$(".component-container p").on("click", function() {
+					$(".component-container p").on("click", function () {
 						// var $li = $(this).closest("li");
 						// $li.siblings("li.active").find(".component-box").slideUp();
 						// $li.siblings("li.active").removeClass("active");
@@ -84,7 +84,7 @@ var vm = new Vue({
 					});
 
 					// 给组件绑定拖拽开始事件
-					$(".component-container .component").on("dragstart", function() {
+					$(".component-container .component").on("dragstart", function () {
 						// 获取组件绑定的数据
 						var dataIndex = $(this).data("index").split("-");
 						var bindData = vm.dataList[dataIndex[0]].components[dataIndex[1]].data[dataIndex[2]];
@@ -93,7 +93,7 @@ var vm = new Vue({
 					});
 
 					// 给组件绑定点击事件，用点击时鼠标与组件的相对位置和来确定
-					$(".component-container .component").on("click", function() {
+					$(".component-container .component").on("click", function () {
 						var rect = getRectPos($(this));
 						var pageX = event.pageX;
 						var pageY = event.pageY;
@@ -151,39 +151,25 @@ function searchTempById(id) {
 }
 
 /**
- * 使用说明展开/收起
+ * 使用说明弹出
  * @returns
  */
-function toggleUpDown() {
-	$("#description").stop(true,true).slideToggle();
+function openUseable() {
+	$("#description").toggle();
 }
 
-
 $(document).ready(function() {
+	// 使用说明dragpanel初始化
+	var description = `
+			<p>1、从左边组件库或DIV库中拖出组件到右边主编辑区。</p>
+			<p>2、组件或模板可通过单击激活，从而为其添加子组件；点击其他区域可取消激活状态。</p>
+			<p>3、鼠标右单击弹出属性编辑模态框，支持编辑各种组件的基础属性。</p>
+			<p>4、输入模板名称后点击“保存模板”按钮，可将当前编辑区的内容设置为固定模板，保存在DIY库中。</p>
+			<p>5、“生成代码”按钮点击可查看当前编辑区内容对应的html代码。</p>
+		`;
+	new DragPanel("description", "使用说明", description);
 	// 开启代码高亮
 	hljs.initHighlightingOnLoad();
-	// 使用说明
-	var description = `
-		<p>1、从左边组件库中拖出组件到右边主编辑区。</p>
-		<p>2、结构组件可通过双击激活，点击主编辑区其他地方可取消激活状态，UI组件无激活状态。</p>
-		<p>3、可将UI组件拖拽到激活的结构组件中，即结构组件是容器。</p>
-		<p>4、鼠标左单击可选中组件（显示红色虚线框），ctrl+delete可移除选中的组件。</p>
-		<p>5、鼠标右单击可呼出固定属性编辑模态框，可编辑组件的基础属性。</p>
-		<p>6、输入页面title，回车或点击“生成代码”将下载格式化后的代码txt文件，另外控制台也将打印另一种格式化风格的代码。</p>
-	`;
-	$("#description").html(description);
-	// 两秒后自动收起使用说明
-	// setTimeout(function() {
-	// 	if (!$("#description").is(":hidden")) {
-	// 		toggleUpDown();
-	// 	}
-	// }, 2000);
-	// 禁止拖拽图片
-	$("#mainArea").on("dragstart", "img", function(e) {
-		e.preventDefault();
-	});
-	
-	
 	// 给主编辑区绑定接收被拖拽组件事件
 	$("#mainArea").on("drop", function() {
 		// 取消主编辑区高亮

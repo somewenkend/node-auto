@@ -19,6 +19,8 @@
   <!-- 代码高亮 -->
   <link rel="stylesheet" type="text/css" href="/plugin/highlight/androidstudio.min.css" />
 <!--  <link rel="stylesheet" type="text/css" href="/plugin/highlight/monokai-sublime.min.css" />-->
+  <!-- dragpanel -->
+  <link rel="stylesheet" type="text/css" href="/plugin/dragpanel/dragpanel.css" />
   <style>
     *{outline: none;}
     #editModal{z-index: 10000;}
@@ -178,8 +180,7 @@
   </div>
   <!-- 使用说明 -->
   <div class="use-des dilb">
-    <small onclick="toggleUpDown()" class="cc00 cp" style="color: red; cursor: pointer;"><i class="fa fa-snowflake-o mr5"></i>使用说明</small>
-    <div id="description" class="none"></div>
+    <small onclick="openUseable()" class="cc00 cp" style="color: red; cursor: pointer;"><i class="fa fa-snowflake-o mr5"></i>使用说明</small>
   </div>
 </div>
 <div class="body">
@@ -285,5 +286,7 @@
 <script src="/js/aheadBack.js"></script>
 <!-- 代码高亮 -->
 <script src="/plugin/highlight/highlight.min.js"></script>
+<!-- dragpanel -->
+<script src="/plugin/dragpanel/dragpanel.js"></script>
 </body>
 </html>
