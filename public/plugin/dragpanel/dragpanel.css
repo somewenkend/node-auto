@@ -28,9 +28,9 @@
 	}
 	.custom-drag-control .head span{
 		position: absolute;
-		right: 25px;
+		right: 20px;
 		padding: 5px 10px;
-		top: 10px;
+		top: 5px;
 		z-index: 1;
 		cursor: pointer;
 	}

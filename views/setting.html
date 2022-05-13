@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+    <title>基础组件维护</title>
+    <link rel="shortcut icon " type="images/x-icon" href="/img/favicon.ico">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/plugin/elementui/element-2.15.8.css" />
+    <style>
+        body{background: #aaa url(/img/rainbow.jpg) repeat fixed center; background-size: 270px; margin: 0; padding: 20px 0;}
+        [v-cloak]{display: none;}
+        ul.comp-type{padding: 0;list-style:none;}
+        ul.comp-type>li{
+            padding: 7px 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+        ul.comp-type>li:hover, ul.comp-type>li.active{
+            background-color: #5a7cfb;
+            color: #fff;
+            border: 1px solid #5a7cfb;
+        }
+        .el-card__body, .el-main{
+            height: calc(100vh - 101px);
+            overflow-y: auto;
+        }
+        .el-row{margin: 0!important;}
+        .el-col.el-col-4{padding-left: 0!important;}
+        .el-col.el-col-20{padding-right: 0!important;}
+        .mr5{margin-right: 5px;} .mt10{margin-top: 10px;}
+        .el-button--mini, .el-button--mini.is-round{padding: 3px 13px;}
+    </style>
+</head>
+<!-- 主编辑区域 -->
+<body>
+    <div id="app" v-cloak>
+        <el-row :gutter="20">
+            <el-col :span="4">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span><i class="fa fa-linode mr5"></i>组件类型</span>
+                        <el-tooltip class="item" effect="dark" content="添加新类型" placement="left">
+                            <el-button type="primary" @click="addType" style="float: right;" size="mini"><i class="fa fa-plus"></i></el-button>
+                        </el-tooltip>
+                    </div>
+                    <ul class="comp-type">
+                        <li v-for="(o,index) in 4" :key="o" :class="['text item', activeIndex == index ? 'active' : '']" @click="selectType(index)">
+                            {{'列表内容 ' + o }}
+                        </li>
+                    </ul>
+                </el-card>
+            </el-col>
+            <el-col :span="20">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span><i class="fa fa-list-ul mr5"></i>组件列表</span>
+                    </div>
+                    <el-table :data="tableData" height="250" style="width: 100%">
+                        <el-table-column prop="date" label="日期" width="180"></el-table-column>
+                        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
+                        <el-table-column prop="address" label="地址"></el-table-column>
+                    </el-table>
+                    <div class="block text-center mt10">
+                        <el-pagination layout="prev, pager, next" :total="50" @current-change="handleCurrentChange"></el-pagination>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+    </div>
+    <script src="/js/vue.min.js"></script>
+    <script src="/plugin/elementui/element-2.15.8.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data() {
+                return {
+                    activeIndex: -1, // 当前激活的组件类型
+                    tableData: []
+                }
+            },
+            methods: {
+                selectType(index) { // 点击列表内容
+                    this.activeIndex = index;
+                },
+                addType() { // 添加组价类型
+
+                },
+                handleCurrentChange(curPage) { // 换页触发
+
+                }
+            },
+            created() {
+
+            },
+            mounted() {
+
+            }
+        })
+    </script>
+</body>
+</html>

@@ -90,7 +90,7 @@
 
     .component-list{overflow: auto; height: calc(100vh - 120px); overflow-x: hidden;}
 
-    .fr{display: inline; float: right;}
+    .fr{display: inline; float: right;display: flex; align-items: center;}
     .cus-siderbar:before{content: inherit;}
 
     /*滚动条样式*/
@@ -151,6 +151,15 @@
     .component-box .col-lg-4.col-md-6:hover > span.del-temp{
       transform: translateY(0);
     }
+    a.base-setting{
+      padding: 5px 7px;
+      color: #666;
+      font-size: 16px;
+    }
+    a.base-setting i{transition: all 1s;}
+    a.base-setting:hover i{
+      transform: rotateZ(90deg);
+    }
   </style>
 </head>
 <!-- 主编辑区域 -->
@@ -161,6 +170,7 @@
 </style>
 <div class="header cus-header">
   <div class="fr">
+    <a href="/setting" class="base-setting" data-placement="bottom" data-toggle="tooltip" title="基础组件维护"><i class="fa fa-cog"></i></a>
     <label class="checkbox" style="display: inline-flex; margin: 8px 0;">
       <span>显示组件边界虚线：</span>
       <input type="checkbox" id="control" checked="checked" />
