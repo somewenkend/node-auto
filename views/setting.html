@@ -12,7 +12,7 @@
         body{background: #aaa url(/img/rainbow.jpg) repeat fixed center; background-size: 270px; margin: 0; padding: 20px 0;}
         [v-cloak]{display: none;}
         ul.comp-type{padding: 0;list-style:none;}
-        ul.comp-type>li{
+        ul.comp-type li{
             padding: 7px 10px;
             margin-bottom: 10px;
             border-radius: 5px;
@@ -21,7 +21,7 @@
             border: 1px solid #ddd;
             color: #666;
         }
-        ul.comp-type>li:hover, ul.comp-type>li.active{
+        ul.comp-type li:hover, ul.comp-type li.active{
             background-color: #5a7cfb;
             color: #fff;
             border: 1px solid #5a7cfb;
@@ -35,6 +35,17 @@
         .el-col.el-col-20{padding-right: 0!important;}
         .mr5{margin-right: 5px;} .mt10{margin-top: 10px;}
         .el-button--mini, .el-button--mini.is-round{padding: 3px 13px;}
+        p{margin-bottom: 0;}
+        .el-button--primary {
+            color: #FFF;
+            background-color: #5a7cfb;
+            border-color: #5a7cfb;
+        }
+        .el-button--primary:focus, .el-button--primary:hover {
+            color: #FFF;
+            background-color: #5a7cfb;
+            border-color: #5a7cfb;
+        }
     </style>
 </head>
 <!-- 主编辑区域 -->
@@ -50,9 +61,13 @@
                         </el-tooltip>
                     </div>
                     <ul class="comp-type">
-                        <li v-for="(o,index) in 4" :key="o" :class="['text item', activeIndex == index ? 'active' : '']" @click="selectType(index)">
-                            {{'列表内容 ' + o }}
-                        </li>
+                        <draggable class="wrapper" v-model="testList" @end="sortEnd">
+                            <transition-group>
+                                <li v-for="(item, index) in testList" :key="item" :class="activeIndex == index ? 'active' : ''" @click="selectType(index)">
+                                    <p>{{'列表内容 ' + item}}</p>
+                                </li>
+                            </transition-group>
+                        </draggable>
                     </ul>
                 </el-card>
             </el-col>
@@ -75,11 +90,14 @@
     </div>
     <script src="/js/vue.min.js"></script>
     <script src="/plugin/elementui/element-2.15.8.js"></script>
+    <script src="/plugin/vuedraggable/sortable.min.js"></script>
+    <script src="/plugin/vuedraggable/vuedraggable.js"></script>
     <script>
         var vm = new Vue({
             el: "#app",
             data() {
                 return {
+                    testList: [1,2,3,4],
                     activeIndex: -1, // 当前激活的组件类型
                     tableData: []
                 }
@@ -88,11 +106,14 @@
                 selectType(index) { // 点击列表内容
                     this.activeIndex = index;
                 },
-                addType() { // 添加组价类型
+                addType() { // 添加组件类型
 
                 },
                 handleCurrentChange(curPage) { // 换页触发
 
+                },
+                sortEnd(ev) { // 拖拽排序结束
+                    this.activeIndex = ev.newIndex; // 排序结束后，当前选中的li位置对应更新
                 }
             },
             created() {

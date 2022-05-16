@@ -96,13 +96,19 @@ var frame = `<!DOCTYPE html>
 			var clipboardObj = navigator.clipboard;
 			if(clipboardObj) {
 				clipboardObj.writeText(beautyHtmlStr).then(function() {
-					alert("复制成功！");
+					vm.$message({
+						message: '复制成功',
+						type: 'success'
+					});
 				})
 			}
 		}
 		console.log(beautyHtmlStr);
 	} else {
-		alert("无代码可生成！");
+		vm.$message({
+			message: '无代码可生成',
+			type: 'warning'
+		});
 	}
 }
 
@@ -130,7 +136,10 @@ function saveTemp() {
 		topDomIds.push($(this).data("id"));
 	});
 	if (name.trim() == "") {
-		alert("模板名称不能为空！");
+		vm.$message({
+			message: '模板名称不能为空',
+			type: 'warning'
+		});
 		return;
 	}
 	$.ajax({
@@ -139,7 +148,10 @@ function saveTemp() {
 		data: {id: guid(), self: html, name: name, topDomIds: topDomIds.join()},
 		success: function (data) {
 			if (data.success) {
-				alert("保存成功！");
+				vm.$message({
+					message: '保存成功',
+					type: 'success'
+				});
 			}
 		},
 		error() {

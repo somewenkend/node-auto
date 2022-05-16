@@ -24,7 +24,10 @@ var vm = new Vue({
 						if (data.success) {
 							// 移除页面数组中元素
 							vm.dataList[1].components[0].data.splice(index, 1);
-							alert("删除成功！");
+							vm.$message({
+								message: '删除成功',
+								type: 'success'
+							});
 						}
 					},
 					error() {

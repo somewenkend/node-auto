@@ -24,13 +24,19 @@ class aheadBack {
     go(type) {
         // 前进操作但已经是最后一步，则提示
         if (type == 0 && this.handleIndex == this.actionStack.length-1) {
-            alert("已是最后一步！");
+            vm.$message({
+                message: '已是最后一步',
+                type: 'warning'
+            });
             return
         }
 
         // 后退操作但已经是第一步，则提示
         if (type == 1 && this.handleIndex <= 0) {
-            alert("已是第一步！");
+            vm.$message({
+                message: '已是第一步',
+                type: 'warning'
+            });
             return
         }
 
