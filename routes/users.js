@@ -9,7 +9,14 @@ var url = common.mongoUrl;
 router.post('/saveTemp', async function(req, res, next) {
   var conn = null;
   try {
-    var myobj = {id:req.body.id, name: req.body.name, topDomIds: req.body.topDomIds, self: req.body.self, createTime: common.formatTime(new Date())};
+    var myobj = {
+      id:req.body.id,
+      name: req.body.name,
+      topDomIds: req.body.topDomIds,
+      self: req.body.self,
+      createTime: common.formatTime(new Date()),
+      updateTime: common.formatTime(new Date())
+    };
     var conn = await MongoClient.connect(url);
     var temp = conn.db("Autocoding").collection("temp");
     await temp.insertOne(myobj);
