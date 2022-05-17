@@ -176,7 +176,6 @@
 						"componentIcon": "iconfont icon-biaoge",
 						"componentName": "laytable",
 						"height": 50,
-						"minWidth": "100%",
 						"dragDirect": ["t", "b"],
 						"html": "<table id=\"dataTable\" lay-filter=\"tablefilter\"></table>"
 					},

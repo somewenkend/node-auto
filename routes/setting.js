@@ -61,8 +61,8 @@ router.get('/searchCompType', async function(req, res, next) {
 router.get('/searchCompById', async function(req, res, next) {
     var conn = null;
     try {
-        var page = req.query.page;
-        var limit = req.query.limit;
+        var page = Number(req.query.page);
+        var limit = Number(req.query.limit);
         var categoryId = req.query.categoryId;
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_detail");
@@ -96,7 +96,7 @@ router.post('/saveCompDetail', async function(req, res, next) {
     try {
         var myobj = {
             id:req.body.id,
-            categoryId: req.body.editSelector,
+            categoryId: req.body.categoryId,
             editSelector: req.body.editSelector,
             type: req.body.type,
             canChangeSize: req.body.canChangeSize,

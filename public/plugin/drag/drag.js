@@ -97,8 +97,8 @@
 			var option = $.extend(true, defaultOption, option);
 
 			$el = $(option.html);
-			$el.height(option.height);
-			if ( Object.prototype.toString.call(option.minWidth) == "[object String]") {
+			$el.height(Number(option.height));
+			if (isNaN(Number(option.minWidth))) {
 				$el.css("min-width", option.minWidth);
 			} else {
 				$el.css("min-width", option.minWidth + "px");

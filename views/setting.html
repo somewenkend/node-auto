@@ -7,6 +7,8 @@
     <link rel="shortcut icon " type="images/x-icon" href="/img/favicon.ico">
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <!-- 代码高亮 -->
+    <link rel="stylesheet" type="text/css" href="/plugin/highlight/androidstudio.min.css" />
     <link rel="stylesheet" type="text/css" href="/plugin/elementui/element-2.15.8.css" />
     <style>
         body{background: #aaa url(/img/rainbow.jpg) repeat fixed center; background-size: 270px; margin: 0; padding: 20px 0;}
@@ -71,6 +73,7 @@
 
         .demo-drawer__content{padding: 20px;}
         .el-radio-group{margin-top: 5px;}
+        pre{padding: 0; max-height: 300px; overflow-y: auto; margin: 0}
     </style>
 </head>
 <!-- 主编辑区域 -->
@@ -115,13 +118,42 @@
                     <div slot="header" class="clearfix">
                         <span><i class="fa fa-list-ul mr5"></i>组件列表</span>
                     </div>
-                    <el-table :data="tableData" height="250" style="width: 100%">
-                        <el-table-column prop="date" label="日期" width="180"></el-table-column>
-                        <el-table-column prop="name" label="姓名" width="180"></el-table-column>
-                        <el-table-column prop="address" label="地址"></el-table-column>
+                    <el-table :data="tableData" cell-style="text-align: center" header-cell-style="text-align: center" height="500" border style="width: 100%">
+                        <el-table-column prop="componentName" label="组件名称" width="150"></el-table-column>
+                        <el-table-column label="组件图标" width="80">
+                            <template slot-scope="scope">
+                                <i :class="scope.row.componentIcon"></i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="html" label="html结构" width="150">
+                            <template slot-scope="scope">
+                                <el-popover placement="right" style= "max-width:1000px; overflow-x: auto;" trigger="click" @show="viewHtml(scope.$index)">
+                                    <pre><code :id="'codesBox' + scope.$index" class="language-objectivec">{{formatHtml(scope.row.html)}}</code></pre>
+                                    <el-tag slot="reference" style="cursor: pointer;">点击查看详情</el-tag>
+                                </el-popover>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="type" label="组件类型" width="100"></el-table-column>
+                        <el-table-column prop="editSelector" label="属性选择器" width="130"></el-table-column>
+                        <el-table-column prop="canChangeSize" label="可拖拽大小"></el-table-column>
+                        <el-table-column prop="dragDirect" label="可拖拽方向"></el-table-column>
+                        <el-table-column prop="height" label="初始高度"></el-table-column>
+                        <el-table-column prop="minWidth" label="最小宽度"></el-table-column>
+                        <el-table-column prop="createTime" label="创建时间" width="150px"></el-table-column>
+                        <el-table-column prop="updateTime" label="更新时间" width="150px"></el-table-column>
+                        <el-table-column label="操作" width="150px">
+                            <template slot-scope="scope">
+                                <el-tooltip content="编辑组件" placement="top">
+                                    <el-button round type="warning" @click.native.prevent="editComp(scope.$index, scope.row)" size="small" icon="fa fa-edit"></el-button>
+                                </el-tooltip>
+                                <el-tooltip content="删除组件" placement="top">
+                                    <el-button round type="danger" @click.native.prevent="deleteComp(scope.$index, scope.row)" size="small" icon="fa fa-times"></el-button>
+                                </el-tooltip>
+                            </template>
+                        </el-table-column>
                     </el-table>
                     <div class="block text-center mt10">
-                        <el-pagination layout="prev, pager, next" :total="50" @current-change="handleCurrentChange"></el-pagination>
+                        <el-pagination layout="prev, pager, next" :total="tableData.length" @current-change="handleCurrentChange"></el-pagination>
                     </div>
                 </el-card>
             </el-col>
@@ -144,46 +176,49 @@
         </el-dialog>
 
         <!-- 添加基础组件 -->
-        <el-drawer title="添加基础组件" :visible.sync="operateComp.dialog" direction="rtl" custom-class="demo-drawer" ref="drawer">
+        <el-drawer title="添加基础组件" :visible.sync="operateComp.dialog" direction="rtl" custom-class="demo-drawer" ref="drawer" :close-on-press-escape="false" :wrapper-closable="false">
             <div class="demo-drawer__content">
                 <el-form :model="componentForm" label-width="82px" label-position="right">
-                    <el-form-item label="属性选择器">
-                        <el-input v-model="componentForm.editSelector" autocomplete="off" placeholder="请输入属性选择器"></el-input>
-                    </el-form-item>
-                    <el-form-item label="组件类型">
-                        <el-radio-group v-model="componentForm.type">
-                            <el-radio label="可做容器" value="1"></el-radio>
-                            <el-radio label="不可做容器" value="2"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="拖拽大小">
-                        <el-radio-group v-model="componentForm.canChangeSize">
-                            <el-radio label="启用" value="0"></el-radio>
-                            <el-radio label="禁止" value="1"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
                     <el-form-item label="组件名称">
                         <el-input v-model="componentForm.componentName" autocomplete="off" placeholder="请输入组件名称"></el-input>
                     </el-form-item>
                     <el-form-item label="组件图标">
                         <el-input v-model="componentForm.componentIcon" autocomplete="off" placeholder="请输入组件图标"></el-input>
                     </el-form-item>
-                    <el-form-item label="组件高度">
+                    <el-form-item label="html结构">
+                        <el-input type="textarea" v-model="componentForm.html" placeholder="请填写组件html结构"></el-input>
+                    </el-form-item>
+                    <el-form-item label="组件类型">
+                        <el-radio-group v-model="componentForm.type">
+                            <el-radio label="1">可做容器</el-radio>
+                            <el-radio label="2">不可做容器</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="属性选择器">
+                        <el-input v-model="componentForm.editSelector" autocomplete="off" placeholder="请输入属性选择器"></el-input>
+                    </el-form-item>
+                    <el-form-item label="可拖拽大小">
+                        <el-radio-group v-model="componentForm.canChangeSize">
+                            <el-radio label="0">启用</el-radio>
+                            <el-radio label="1">禁止</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="可拖拽方向">
+                        <el-tooltip class="item" effect="dark" content="允许可拖拽大小启用后才有意义" placement="left" style="float: right; color: #ddd; margin-top: 12px;">
+                            <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                        </el-tooltip>
+                        <el-checkbox-group v-model="componentForm.dragDirect">
+                            <el-checkbox label="t">上</el-checkbox>
+                            <el-checkbox label="b">下</el-checkbox>
+                            <el-checkbox label="l">左</el-checkbox>
+                            <el-checkbox label="r">右</el-checkbox>
+                        </el-checkbox-group>
+                    </el-form-item>
+                    <el-form-item label="初始高度">
                         <el-input v-model="componentForm.height" autocomplete="off" placeholder="请输入组件高度或auto"></el-input>
                     </el-form-item>
                     <el-form-item label="最小宽度">
-                        <el-input v-model="componentForm.height" autocomplete="off" placeholder="请输入组件最小宽度"></el-input>
-                    </el-form-item>
-                    <el-form-item label="拖拽方向">
-                        <el-checkbox-group v-model="componentForm.dragDirect">
-                            <el-checkbox label="上" value="t"></el-checkbox>
-                            <el-checkbox label="下" name="b"></el-checkbox>
-                            <el-checkbox label="左" name="l"></el-checkbox>
-                            <el-checkbox label="右" name="r"></el-checkbox>
-                        </el-checkbox-group>
-                    </el-form-item>
-                    <el-form-item label="html结构">
-                        <el-input type="textarea" v-model="componentForm.html" placeholder="请填写组件html结构"></el-input>
+                        <el-input v-model="componentForm.minWidth" autocomplete="off" placeholder="请输入组件最小宽度"></el-input>
                     </el-form-item>
                 </el-form>
                 <div class="demo-drawer__footer text-center">
@@ -198,6 +233,9 @@
     <script src="/plugin/elementui/element-2.15.8.js"></script>
     <script src="/plugin/vuedraggable/sortable.min.js"></script>
     <script src="/plugin/vuedraggable/vuedraggable.js"></script>
+    <script src="/plugin/html-beauty/beautify-html.js"></script>
+    <!-- 代码高亮 -->
+    <script src="/plugin/highlight/highlight.min.js"></script>
     <script>
         var vm = new Vue({
             el: "#app",
@@ -223,12 +261,12 @@
                         categoryId: "",
                         editSelector: "",
                         type: "",
-                        canChangeSize: "",
-                        componentIcon: "",
+                        canChangeSize: "0",
+                        componentIcon: "fa fa-tags",
                         componentName: "",
-                        height: "",
+                        height: "50",
                         minWidth: "",
-                        dragDirect: [],
+                        dragDirect: ["t", "b"],
                         html: ""
                     }
                 }
@@ -303,7 +341,7 @@
                     if (this.operateComp.type == "add") { // 添加
                         this.componentForm.categoryId = this.typeList[this.operateType.index].id;
                         $.ajax({
-                            url: "/setting/saveCompType",
+                            url: "/setting/saveCompDetail",
                             method: "post",
                             data: {...this.componentForm, id: guid()},
                             success: (data) => {
@@ -359,6 +397,9 @@
                 },
                 sortEnd(ev) { // 拖拽排序结束
                     this.activeIndex = ev.newIndex; // 排序结束后，当前选中的li位置对应更新
+                },
+                viewHtml(index) { // 查看详细的html结构
+                    hljs.highlightElement($("#codesBox" + index)[0]);
                 }
             },
             created() {
@@ -375,6 +416,15 @@
                     error() {
                     }
                 })
+            },
+            computed: {
+                formatHtml: function() {
+                    return function(htmlStr) { // format html字符串
+                        return html_beautify(htmlStr, {
+                            inline: ["i"]
+                        }); // 美化后的代码
+                    }
+                }
             },
             mounted() {
 
