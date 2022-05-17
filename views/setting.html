@@ -129,14 +129,20 @@
                             <template slot-scope="scope">
                                 <el-popover placement="right" style= "max-width:1000px; overflow-x: auto;" trigger="click" @show="viewHtml(scope.$index)">
                                     <pre><code :id="'codesBox' + scope.$index" class="language-objectivec">{{formatHtml(scope.row.html)}}</code></pre>
-                                    <el-tag slot="reference" style="cursor: pointer;">点击查看详情</el-tag>
+                                    <el-tag slot="reference" style="cursor: pointer;"><i class="fa fa-info-circle fa-fw"></i>点击查看详情</el-tag>
                                 </el-popover>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="type" label="组件类型" width="100"></el-table-column>
+                        <el-table-column label="组件类型" width="120">
+                            <template slot-scope="scope">{{scope.row.type == 1 ? "可做容器" : "不可做容器"}}</template>
+                        </el-table-column>
                         <el-table-column prop="editSelector" label="属性选择器" width="130"></el-table-column>
-                        <el-table-column prop="canChangeSize" label="可拖拽大小"></el-table-column>
-                        <el-table-column prop="dragDirect" label="可拖拽方向"></el-table-column>
+                        <el-table-column label="可拖拽大小">
+                            <template slot-scope="scope">{{scope.row.canChangeSize == 0 ? "允许" : "禁止"}}</template>
+                        </el-table-column>
+                        <el-table-column label="可拖拽方向" width="120">
+                            <template slot-scope="scope">{{formatDirect(scope.row.dragDirect)}}</template>
+                        </el-table-column>
                         <el-table-column prop="height" label="初始高度"></el-table-column>
                         <el-table-column prop="minWidth" label="最小宽度"></el-table-column>
                         <el-table-column prop="createTime" label="创建时间" width="150px"></el-table-column>
@@ -344,6 +350,7 @@
                             url: "/setting/saveCompDetail",
                             method: "post",
                             data: {...this.componentForm, id: guid()},
+                            traditional: true,
                             success: (data) => {
                                 if (data.success) {
                                     vm.$message({
@@ -362,6 +369,7 @@
                             url: "/setting/editCompDetail",
                             method: "post",
                             data: {...this.componentForm, id: this.tableData[this.operateComp.index].id},
+                            traditional: true,
                             success: (data) => {
                                 if (data.success) {
                                     vm.$message({
@@ -418,11 +426,27 @@
                 })
             },
             computed: {
-                formatHtml: function() {
-                    return function(htmlStr) { // format html字符串
+                formatHtml: function() { // format html字符串
+                    return function(htmlStr) {
                         return html_beautify(htmlStr, {
                             inline: ["i"]
                         }); // 美化后的代码
+                    }
+                },
+                formatDirect() { // format可拖拽方向
+                    return function(direct) {
+                        if (!direct) {
+                            return "";
+                        }
+                        return direct.map(item => {
+                            switch(item) {
+                                case "t":return "上";
+                                case "b":return "下";
+                                case "l":return "左";
+                                case "r":return "右";
+                                default:return"";
+                            }
+                        }).join("、");
                     }
                 }
             },
