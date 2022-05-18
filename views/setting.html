@@ -84,9 +84,19 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span><i class="fa fa-linode mr5"></i>组件类型</span>
-                        <el-tooltip class="item" effect="dark" content="添加新类型" placement="left">
-                            <el-button type="primary" @click="addType" style="float: right;" size="mini"><i class="fa fa-plus"></i></el-button>
-                        </el-tooltip>
+                        <div style="float: right;">
+                            <el-tooltip class="item" effect="dark" content="添加新类型" placement="top">
+                                <el-button type="primary" @click="addType" size="mini"><i class="fa fa-plus"></i></el-button>
+                            </el-tooltip>
+                            <span v-show="draged" style="margin-left:10px">
+                                <el-tooltip class="item" effect="dark" content="保存排序" placement="top">
+                                    <el-button type="success" round @click="saveSort" size="mini"><i class="fa fa-check"></i></el-button>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="不保存排序" placement="top">
+                                    <el-button @click="cancelSort" round size="mini" style="margin-left:2px"><i class="fa fa-times"></i></el-button>
+                                </el-tooltip>
+                            </span>
+                        </div>
                     </div>
                     <ul class="comp-type">
                         <draggable class="wrapper" v-model="typeList" @end="sortEnd">
@@ -98,13 +108,13 @@
                                     </div>
                                     <div class="operate">
                                         <el-tooltip class="operate" effect="dark" content="添加组件" placement="top">
-                                            <i class="fa fa-plus-circle" @click="addComp(index)"></i>
+                                            <i class="fa fa-plus-circle" @click.stop="addComp(index)"></i>
                                         </el-tooltip>
                                         <el-tooltip class="operate" effect="dark" content="编辑" placement="top">
-                                            <i class="fa fa-pencil-square" @click="editType(index)"></i>
+                                            <i class="fa fa-pencil-square" @click.stop="editType(index)"></i>
                                         </el-tooltip>
                                         <el-tooltip class="operate" effect="dark" content="删除" placement="top">
-                                            <i class="fa fa-times-circle"></i>
+                                            <i class="fa fa-times-circle" @click.stop="delType(index)"></i>
                                         </el-tooltip>
                                     </div>
                                 </li>
@@ -116,7 +126,7 @@
             <el-col :span="20">
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
-                        <span><i class="fa fa-list-ul mr5"></i>组件列表</span>
+                        <span><i class="fa fa-list-ul mr5"></i>{{~activeIndex ? typeList[activeIndex].name : ""}}组件列表</span>
                     </div>
                     <el-table :data="tableData" cell-style="text-align: center" header-cell-style="text-align: center" height="500" border style="width: 100%">
                         <el-table-column prop="componentName" label="组件名称" width="150"></el-table-column>
@@ -134,11 +144,11 @@
                             </template>
                         </el-table-column>
                         <el-table-column label="组件类型" width="120">
-                            <template slot-scope="scope">{{scope.row.type == 1 ? "可做容器" : "不可做容器"}}</template>
+                            <template slot-scope="scope">{{scope.row.type == 1 ? "容器" : "控件"}}</template>
                         </el-table-column>
                         <el-table-column prop="editSelector" label="属性选择器" width="130"></el-table-column>
                         <el-table-column label="可拖拽大小">
-                            <template slot-scope="scope">{{scope.row.canChangeSize == 0 ? "允许" : "禁止"}}</template>
+                            <template slot-scope="scope">{{scope.row.canChangeSize == 0 ? "启用" : "禁止"}}</template>
                         </el-table-column>
                         <el-table-column label="可拖拽方向" width="120">
                             <template slot-scope="scope">{{formatDirect(scope.row.dragDirect)}}</template>
@@ -150,10 +160,10 @@
                         <el-table-column label="操作" width="150px">
                             <template slot-scope="scope">
                                 <el-tooltip content="编辑组件" placement="top">
-                                    <el-button round type="warning" @click.native.prevent="editComp(scope.$index, scope.row)" size="small" icon="fa fa-edit"></el-button>
+                                    <el-button round type="warning" @click.native.prevent="editComp(scope.$index)" size="small" icon="fa fa-edit"></el-button>
                                 </el-tooltip>
                                 <el-tooltip content="删除组件" placement="top">
-                                    <el-button round type="danger" @click.native.prevent="deleteComp(scope.$index, scope.row)" size="small" icon="fa fa-times"></el-button>
+                                    <el-button round type="danger" @click.native.prevent="delComp(scope.$index)" size="small" icon="fa fa-times"></el-button>
                                 </el-tooltip>
                             </template>
                         </el-table-column>
@@ -196,8 +206,8 @@
                     </el-form-item>
                     <el-form-item label="组件类型">
                         <el-radio-group v-model="componentForm.type">
-                            <el-radio label="1">可做容器</el-radio>
-                            <el-radio label="2">不可做容器</el-radio>
+                            <el-radio label="1">容器</el-radio>
+                            <el-radio label="2">控件</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="属性选择器">
@@ -247,6 +257,7 @@
             el: "#app",
             data() {
                 return {
+                    draged: false, // 是否被拖拽过
                     operateType: {
                         dialog: false, // 操作的对话框展示状态
                         loading: false, // 保存按钮loading
@@ -297,6 +308,9 @@
                                     });
                                     this.operateType.dialog = false; // 关闭组件类型对话框
                                     this.operateType.loading = false;
+
+                                    // 刷新组件类型数据
+                                    this.searchAllType();
                                 }
                             },
                             error() {
@@ -315,6 +329,9 @@
                                     });
                                     this.operateType.dialog = false; // 关闭组件类型对话框
                                     this.operateType.loading = false;
+
+                                    // 刷新组件类型数据
+                                    this.searchAllType();
                                 }
                             },
                             error() {
@@ -323,14 +340,42 @@
                     }
                 },
                 addType() { // 添加组件类型
-                    this.operateType.type = "edit";
+                    this.operateType.type = "add";
                     this.operateType.index = -1;
                     this.operateType.dialog = true;
                 },
                 editType(index) { // 编辑组件类型
                     this.operateType.type = "edit";
                     this.operateType.index = index;
+                    // 当前操作组件类型对象赋值
+                    this.typeForm = $.extend(true, {}, this.typeList[index]);
                     this.operateType.dialog = true;
+                },
+                delType(index) { // 删除组件类型
+                    this.$confirm('确定要删除此组件类型?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.ajax({
+                            url: "/setting/deleteCompType",
+                            method: "post",
+                            data: {id: this.typeList[index].id},
+                            success: (data) => {
+                                if (data.success) {
+                                    this.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    });
+
+                                    // 刷新组件类型数据
+                                    this.searchAllType();
+                                }
+                            },
+                            error() {
+                            }
+                        })
+                    }).catch(() => {});
                 },
                 addComp(index) { // 添加组件
                     this.operateComp.type = "add";
@@ -340,7 +385,35 @@
                 editComp(index) { // 编辑组件
                     this.operateComp.type = "edit";
                     this.operateComp.index = index;
+                    // 当前操作组件对象赋值
+                    this.componentForm = $.extend(true, {}, this.tableData[index]);
                     this.operateComp.dialog = true;
+                },
+                delComp(index) { // 删除组件
+                    this.$confirm('确定要删除此组件?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        $.ajax({
+                            url: "/setting/deleteCompDetail",
+                            method: "post",
+                            data: {id: this.tableData[index].id},
+                            success: (data) => {
+                                if (data.success) {
+                                    this.$message({
+                                        type: 'success',
+                                        message: '删除成功!'
+                                    });
+
+                                    // 刷新组件列表数据
+                                    this.handleCurrentChange(1);
+                                }
+                            },
+                            error() {
+                            }
+                        })
+                    }).catch(() => {});
                 },
                 saveComponent() { // 保存添加的组件
                     this.operateComp.loading = true; // 添加组件保存按钮loading
@@ -359,6 +432,9 @@
                                     });
                                     this.operateComp.dialog = false; // 关闭组件对话框
                                     this.operateComp.loading = false;
+
+                                    // 刷新组件列表数据
+                                    this.handleCurrentChange(1);
                                 }
                             },
                             error() {
@@ -378,12 +454,29 @@
                                     });
                                     this.operateComp.dialog = false; // 关闭组件对话框
                                     this.operateComp.loading = false;
+
+                                    // 刷新组件列表数据
+                                    this.handleCurrentChange(1);
                                 }
                             },
                             error() {
                             }
                         })
                     }
+                },
+                searchAllType() { // 查询所有的组件类型
+                    $.ajax({
+                        url: "/setting/searchCompType",
+                        method: "get",
+                        data: {},
+                        success: (data) => {
+                            if (Object.prototype.toString.call(data) == "[object Array]") {
+                                this.typeList = data;
+                            }
+                        },
+                        error() {
+                        }
+                    })
                 },
                 handleCurrentChange(curPage) { // 换页触发
                     $.ajax({
@@ -404,26 +497,21 @@
                     })
                 },
                 sortEnd(ev) { // 拖拽排序结束
-                    this.activeIndex = ev.newIndex; // 排序结束后，当前选中的li位置对应更新
+                    this.selectType(ev.newIndex);
+                    this.draged = true;
+                },
+                saveSort() { // 保存排序
+
+                },
+                cancelSort() { // 不保存排序
+                    this.draged = false;
                 },
                 viewHtml(index) { // 查看详细的html结构
                     hljs.highlightElement($("#codesBox" + index)[0]);
                 }
             },
             created() {
-                // 查询所有的组件类型
-                $.ajax({
-                    url: "/setting/searchCompType",
-                    method: "get",
-                    data: {},
-                    success: (data) => {
-                        if (Object.prototype.toString.call(data) == "[object Array]") {
-                            this.typeList = data;
-                        }
-                    },
-                    error() {
-                    }
-                })
+                this.searchAllType(); // 查询所有组件类型
             },
             computed: {
                 formatHtml: function() { // format html字符串

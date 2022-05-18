@@ -15,7 +15,8 @@ router.post('/saveTemp', async function(req, res, next) {
       topDomIds: req.body.topDomIds,
       self: req.body.self,
       createTime: common.formatTime(new Date()),
-      updateTime: common.formatTime(new Date())
+      updateTime: common.formatTime(new Date()),
+      del: 0
     };
     var conn = await MongoClient.connect(url);
     var temp = conn.db("Autocoding").collection("temp");
@@ -34,7 +35,7 @@ router.get('/searchTemp', async function(req, res, next) {
   try {
     var conn = await MongoClient.connect(url);
     var temp = conn.db("Autocoding").collection("temp");
-    var arr = await temp.find().toArray();
+    var arr = await temp.find({del: 0}).toArray();
     res.send(arr);
   } catch(err) {
     console.log("错误：" + err.message);
@@ -64,7 +65,7 @@ router.post('/deleteTemp', async function(req, res, next) {
   try {
     var conn = await MongoClient.connect(url);
     var temp = conn.db("Autocoding").collection("temp");
-    await temp.deleteMany({"id": req.body.id});
+    await temp.updateOne({id: req.body.id}, {$set: {del: 1}});
     res.send({success: true});
   } catch(err) {
     console.log("错误：" + err.message);

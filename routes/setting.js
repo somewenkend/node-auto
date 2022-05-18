@@ -14,7 +14,8 @@ router.post('/saveCompType', async function(req, res, next) {
             name: req.body.name,
             icon: req.body.icon,
             createTime: common.formatTime(new Date()),
-            updateTime: common.formatTime(new Date())
+            updateTime: common.formatTime(new Date()),
+            del: 0
         };
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_type");
@@ -48,7 +49,7 @@ router.get('/searchCompType', async function(req, res, next) {
     try {
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_type");
-        var arr = await temp.find().toArray();
+        var arr = await temp.find({del: 0}).toArray();
         res.send(arr);
     } catch(err) {
         console.log("错误：" + err.message);
@@ -66,7 +67,7 @@ router.get('/searchCompById', async function(req, res, next) {
         var categoryId = req.query.categoryId;
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_detail");
-        var arr = await temp.find({"categoryId": categoryId}).sort({"createTime": 1}).skip((page-1)*limit).limit(limit).toArray();
+        var arr = await temp.find({"categoryId": categoryId, "del": 0}).sort({"createTime": 1}).skip((page-1)*limit).limit(limit).toArray();
         res.send(arr);
     } catch(err) {
         console.log("错误：" + err.message);
@@ -81,7 +82,7 @@ router.post('/deleteCompType', async function(req, res, next) {
     try {
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_type");
-        await temp.deleteMany({"id": req.body.id});
+        await temp.updateOne({id: req.body.id}, {$set: {del: 1}});
         res.send({success: true});
     } catch(err) {
         console.log("错误：" + err.message);
@@ -107,7 +108,8 @@ router.post('/saveCompDetail', async function(req, res, next) {
             dragDirect: req.body.dragDirect,
             html: req.body.html,
             createTime: common.formatTime(new Date()),
-            updateTime: common.formatTime(new Date())
+            updateTime: common.formatTime(new Date()),
+            del: 0
         };
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_detail");
@@ -125,7 +127,7 @@ router.post('/editCompDetail', async function(req, res, next) {
     var conn = null;
     try {
         var updateObj = {
-            categoryId: req.body.editSelector,
+            categoryId: req.body.categoryId,
             editSelector: req.body.editSelector,
             type: req.body.type,
             canChangeSize: req.body.canChangeSize,
@@ -148,13 +150,13 @@ router.post('/editCompDetail', async function(req, res, next) {
     }
 });
 
-// 删除组件类型
+// 删除组件
 router.post('/deleteCompDetail', async function(req, res, next) {
     var conn = null;
     try {
         var conn = await MongoClient.connect(url);
-        var temp = conn.db("Autocoding").collection("comp_type");
-        await temp.deleteMany({"id": req.body.id});
+        var temp = conn.db("Autocoding").collection("comp_detail");
+        await temp.updateOne({id: req.body.id}, {$set: {del: 1}});
         res.send({success: true});
     } catch(err) {
         console.log("错误：" + err.message);
