@@ -15,7 +15,8 @@ router.post('/saveCompType', async function(req, res, next) {
             icon: req.body.icon,
             createTime: common.formatTime(new Date()),
             updateTime: common.formatTime(new Date()),
-            del: 0
+            del: 0,
+            sort: -1
         };
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_type");
@@ -43,13 +44,31 @@ router.post('/editCompType', async function(req, res, next) {
     }
 });
 
+// 组件类型排序
+router.post('/sortCompType', async function(req, res, next) {
+    var conn = null;
+    try {
+        var conn = await MongoClient.connect(url);
+        var temp = conn.db("Autocoding").collection("comp_type");
+        var ids = req.body.ids;
+        for (var index in ids) {
+            await temp.updateOne({id: ids[index]}, {$set: {"sort": (Number(index)+1)}});
+        }
+        res.send({success: true});
+    } catch(err) {
+        console.log("错误：" + err.message);
+    } finally {
+        conn?conn.close():'';
+    }
+});
+
 // 查询全部组件类型
 router.get('/searchCompType', async function(req, res, next) {
     var conn = null;
     try {
         var conn = await MongoClient.connect(url);
         var temp = conn.db("Autocoding").collection("comp_type");
-        var arr = await temp.find({del: 0}).toArray();
+        var arr = await temp.find({del: 0}).sort({"sort": 1}).toArray();
         res.send(arr);
     } catch(err) {
         console.log("错误：" + err.message);

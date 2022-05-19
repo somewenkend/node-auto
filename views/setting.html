@@ -501,7 +501,25 @@
                     this.draged = true;
                 },
                 saveSort() { // 保存排序
-
+                    $.ajax({
+                        url: "/setting/sortCompType",
+                        method: "post",
+                        traditional: true,
+                        data: {
+                            ids: this.typeList.map(item => {return item.id})
+                        },
+                        success: (data) => {
+                            if (data.success) {
+                                vm.$message({
+                                    message: '排序成功',
+                                    type: 'success'
+                                });
+                                this.draged = false; // 回复到排序前状态
+                            }
+                        },
+                        error() {
+                        }
+                    })
                 },
                 cancelSort() { // 不保存排序
                     this.draged = false;
