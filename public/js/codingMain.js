@@ -1,8 +1,18 @@
 var vm = new Vue({
 	el: "#app",
 	data: {
-		// 组件库数据
-		dataList: [],
+		// 组件和DIY库数据
+		dataList: [
+			{
+				"containerId": "Struct",
+				"name": "组件库",
+				"components": []
+			}, {
+				"containerId": "Ui",
+				"name": "DIY库",
+				"components": []
+			}
+		],
 		// 组件库中元素被点击时与鼠标的相对位置
 		dragClickPosition: {
 			width: 0,
@@ -39,8 +49,8 @@ var vm = new Vue({
 	mounted: function() {
 		var _this = this;
 		// ajax
-		$.getJSON("/js/components.json", function (data) {
-			vm.dataList = data;
+		$.get("/users/searchComponents", function (data) {
+			vm.dataList[0].components = data;
 		}).then(function () {
 			searchTemp().then(data => {
 				data.forEach(item => {

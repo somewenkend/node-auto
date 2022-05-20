@@ -5,6 +5,32 @@ var common = require('../common');
 // 本地mongo数据库Autocoding
 var url = common.mongoUrl;
 
+// 查询所有基础组件
+router.get('/searchComponents', async function(req, res, next) {
+  var conn = null;
+  try {
+    var conn = await MongoClient.connect(url);
+    var dbType = conn.db("Autocoding").collection("comp_type");
+    var dbDetail = conn.db("Autocoding").collection("comp_detail");
+    var arr = []; // 总数组
+    // 以sort字段升序查询所有组件类型
+    var arrType = await dbType.find({del: 0}).sort({"sort": 1}).toArray();
+    for (var type of arrType) {
+      // 以createTime字段升序查询当前类型的组件
+      var arrComp = await dbDetail.find({categoryId: type.id, del: 0}).sort({"createTime": 1}).toArray();
+      arr.push({
+        ...type,
+        data: arrComp
+      });
+    }
+    res.send(arr);
+  } catch(err) {
+    console.log("错误：" + err.message);
+  } finally {
+    conn?conn.close():'';
+  }
+});
+
 // 模板插入mongo
 router.post('/saveTemp', async function(req, res, next) {
   var conn = null;
