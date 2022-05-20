@@ -10,7 +10,7 @@
 					{
 						"editSelector": "",
 						"type": 1,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "fa fa-search",
 						"componentName": "搜索区域",
 						"height": 80,
@@ -40,7 +40,7 @@
 					{
 						"editSelector": "",
 						"type": 1,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "fa fa-align-right",
 						"componentName": "操作按钮区",
 						"height": 54,
@@ -87,7 +87,7 @@
 					{
 						"editSelector": "input",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-input1",
 						"componentName": "文本input",
 						"height": "auto",
@@ -97,7 +97,7 @@
 					{
 						"editSelector": "input",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-input",
 						"componentName": "月份input",
 						"height": "auto",
@@ -107,7 +107,7 @@
 					{
 						"editSelector": "input",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-input",
 						"componentName": "日期input",
 						"height": "auto",
@@ -117,7 +117,7 @@
 					{
 						"editSelector": "select",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-xialaliebiao",
 						"componentName": "select",
 						"height": "auto",
@@ -127,7 +127,7 @@
 					{
 						"editSelector": "textarea",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-textarea1",
 						"componentName": "textarea",
 						"height": "auto",
@@ -137,27 +137,27 @@
 					{
 						"editSelector": "input",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-radio",
 						"componentName": "radio",
 						"height": "auto",
 						"dragDirect": ["t", "b"],
-						"html": "<div class=\"col-md-4 form-cont\"><div class=\"col-md-5 form-left\">是否发薪方</div><div class=\"col-md-7\"><label class=\"lay-radio\"><input name=\"autorenew\" type=\"radio\" value=\"1\" checked>是</label><input name=\"autorenew\" type=\"radio\" value=\"2\">否</label><div class=\"err-msg\"></div></div></div>"
+						"html": "<div class=\"col-md-4 form-cont\"><div class=\"col-md-5 form-left\">是否发薪方</div><div class=\"col-md-7\"><label class=\"lay-radio\"><input name=\"autorenew\" type=\"radio\" value=\"1\" checked>是</label><label class=\"lay-radio\"><input name=\"autorenew\" type=\"radio\" value=\"2\">否</label><div class=\"err-msg\"></div></div></div>"
 					},
 					{
 						"editSelector": "input",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-checkbox",
 						"componentName": "checkbox",
 						"height": "auto",
 						"dragDirect": ["t", "b"],
-						"html": "<div class=\"col-md-4 form-cont\"><div class=\"col-md-5 form-left\">险种</div><div class=\"col-md-7\"><label class=\"lay-radio\"><input name=\"insurance\" type=\"checkbox\" value=\"1\" checked>失业险</label><input name=\"insurance\" type=\"checkbox\" value=\"2\">生育险</label><div class=\"err-msg\"></div></div></div>"
+						"html": "<div class=\"col-md-4 form-cont\"><div class=\"col-md-5 form-left\">险种</div><div class=\"col-md-7\"><label class=\"lay-radio\"><input name=\"insurance\" type=\"checkbox\" value=\"1\" checked>失业险</label><label class=\"lay-radio\"><input name=\"insurance\" type=\"checkbox\" value=\"2\">生育险</label><div class=\"err-msg\"></div></div></div>"
 					},
 					{
 						"editSelector": "",
 						"type": 2,
-						"canChangeSize": 1,
+						"canChangeSize": 0,
 						"componentIcon": "iconfont icon-anniu1",
 						"componentName": "查询-重置",
 						"height": "auto",
@@ -392,7 +392,7 @@
 						"type": 1,
 						"canChangeSize": 1,
 						"componentIcon": "iconfont icon-square",
-						"componentName": "普通div",
+						"componentName": "div",
 						"height": 100,
 						"dragDirect": ["t", "b"],
 						"html": "<div></div>"

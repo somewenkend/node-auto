@@ -7,6 +7,8 @@
     <link rel="shortcut icon " type="images/x-icon" href="/img/favicon.ico">
     <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="/plugin/font-alibaba/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/plugin/drag/drag.css" />
     <!-- 代码高亮 -->
     <link rel="stylesheet" type="text/css" href="/plugin/highlight/androidstudio.min.css" />
     <link rel="stylesheet" type="text/css" href="/plugin/elementui/element-2.15.8.css" />
@@ -128,7 +130,7 @@
                     <div slot="header" class="clearfix">
                         <span><i class="fa fa-list-ul mr5"></i>{{~activeIndex ? typeList[activeIndex].name : ""}}组件列表</span>
                     </div>
-                    <el-table :data="tableData" cell-style="text-align: center" header-cell-style="text-align: center" height="500" border style="width: 100%">
+                    <el-table :data="tableData" cell-style="text-align: center" header-cell-style="text-align: center" border style="width: 100%">
                         <el-table-column prop="componentName" label="组件名称" width="150"></el-table-column>
                         <el-table-column label="组件图标" width="80">
                             <template slot-scope="scope">
@@ -169,7 +171,7 @@
                         </el-table-column>
                     </el-table>
                     <div class="block text-center mt10">
-                        <el-pagination layout="prev, pager, next" :total="tableData.length" @current-change="handleCurrentChange"></el-pagination>
+                        <el-pagination layout="prev, pager, next" :total="totalCount" @current-change="handleCurrentChange"></el-pagination>
                     </div>
                 </el-card>
             </el-col>
@@ -257,6 +259,7 @@
             el: "#app",
             data() {
                 return {
+                    totalCount: 0, // 当前类型组件总条数
                     draged: false, // 是否被拖拽过
                     operateType: {
                         dialog: false, // 操作的对话框展示状态
@@ -291,7 +294,25 @@
             methods: {
                 selectType(index) { // 点击列表内容
                     this.activeIndex = index;
-                    this.handleCurrentChange(1);
+                    this.$nextTick(function() {
+                        // 查询当前类型组件总条数
+                        $.ajax({
+                            url: "/setting/searchCount",
+                            method: "get",
+                            data: {
+                                categoryId: this.typeList[this.activeIndex].id
+                            },
+                            success: (data) => {
+                                if(data.success) {
+                                    this.totalCount = data.count;
+                                }
+                            },
+                            error() {
+                            }
+                        })
+                        // 分页查询组件
+                        this.handleCurrentChange(1);
+                    })
                 },
                 saveType() { // 点击保存
                     this.operateType.loading = true;

@@ -77,7 +77,7 @@ router.get('/searchCompType', async function(req, res, next) {
     }
 });
 
-// 通过id查询组件类型下的全部组件
+// 通过id分页查询组件类型下的组件
 router.get('/searchCompById', async function(req, res, next) {
     var conn = null;
     try {
@@ -88,6 +88,22 @@ router.get('/searchCompById', async function(req, res, next) {
         var temp = conn.db("Autocoding").collection("comp_detail");
         var arr = await temp.find({"categoryId": categoryId, "del": 0}).sort({"createTime": 1}).skip((page-1)*limit).limit(limit).toArray();
         res.send(arr);
+    } catch(err) {
+        console.log("错误：" + err.message);
+    } finally {
+        conn?conn.close():'';
+    }
+});
+
+// 通过id查询组件类型下的组件数量
+router.get('/searchCount', async function(req, res, next) {
+    var conn = null;
+    try {
+        var categoryId = req.query.categoryId;
+        var conn = await MongoClient.connect(url);
+        var temp = conn.db("Autocoding").collection("comp_detail");
+        var arr = await temp.find({"categoryId": categoryId, "del": 0}).toArray();
+        res.send({success: true, count: arr.length});
     } catch(err) {
         console.log("错误：" + err.message);
     } finally {
