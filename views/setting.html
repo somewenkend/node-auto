@@ -148,7 +148,7 @@
                         </el-table-column>
                         <el-table-column prop="editSelector" label="属性选择器" width="130"></el-table-column>
                         <el-table-column label="可拖拽大小">
-                            <template slot-scope="scope">{{scope.row.canChangeSize == 0 ? "启用" : "禁止"}}</template>
+                            <template slot-scope="scope">{{scope.row.canChangeSize == 1 ? "启用" : "禁止"}}</template>
                         </el-table-column>
                         <el-table-column label="可拖拽方向" width="120">
                             <template slot-scope="scope">{{formatDirect(scope.row.dragDirect)}}</template>
@@ -215,8 +215,8 @@
                     </el-form-item>
                     <el-form-item label="可拖拽大小">
                         <el-radio-group v-model="componentForm.canChangeSize">
-                            <el-radio label="0">启用</el-radio>
-                            <el-radio label="1">禁止</el-radio>
+                            <el-radio label="1">启用</el-radio>
+                            <el-radio label="0">禁止</el-radio>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="可拖拽方向">
@@ -278,7 +278,7 @@
                         categoryId: "",
                         editSelector: "",
                         type: "",
-                        canChangeSize: "0",
+                        canChangeSize: "1",
                         componentIcon: "fa fa-tags",
                         componentName: "",
                         height: "50",
