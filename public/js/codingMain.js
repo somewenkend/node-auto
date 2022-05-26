@@ -10,7 +10,13 @@ var vm = new Vue({
 			}, {
 				"containerId": "Ui",
 				"name": "DIY库",
-				"components": []
+				"components": [
+					{
+						"name": "模板",
+						"icon": "fa fa-hand-o-right fa-fw",
+						"data": []
+					}
+				]
 			}
 		],
 		// 组件库中元素被点击时与鼠标的相对位置
@@ -25,7 +31,11 @@ var vm = new Vue({
 	},
 	methods: {
 		delTemp(id, index) { // 删除DIY库的模板
-			if (confirm("确定要删除？")) {
+			this.$confirm('确定要删除此模板?', '提示', {
+				confirmButtonText: '确定',
+				cancelButtonText: '取消',
+				type: 'warning'
+			}).then(() => {
 				$.ajax({
 					url: "/users/deleteTemp",
 					method: "post",
@@ -43,7 +53,7 @@ var vm = new Vue({
 					error() {
 					}
 				})
-			}
+			}).catch(() => {});
 		}
 	},
 	mounted: function() {
@@ -551,4 +561,8 @@ function ensureAttr() {
 	});
 	// 关闭模态框
 	$("#editModal").modal("hide");
+}
+
+window.onbeforeunload = function(event) {
+	return false;
 }
