@@ -22,6 +22,8 @@
   <!-- dragpanel -->
   <link rel="stylesheet" type="text/css" href="/plugin/dragpanel/dragpanel.css" />
   <link rel="stylesheet" type="text/css" href="/plugin/elementui/element-2.15.8.css" />
+  <!-- ios6switch -->
+  <link rel="stylesheet" type="text/css" href="/plugin/ios6switch/ios6switch.css" />
   <style>
     *{outline: none;}
     #editModal{z-index: 10000;}
@@ -33,11 +35,11 @@
     pre{padding: 0; max-height: calc(100vh - 210px); overflow-y: auto; margin: 0}
     /*留下空隙*/
     .form-group.autocoding-el, .form-horizon.autocoding-el, [title="普通div"]{padding: 10px 0;}
-    body{padding: 85px 0 0; background: #aaa url(/img/rainbow.jpg) repeat fixed center; background-size: 270px;}
+    body{padding: 65px 0 0; background: #aaa url(/img/rainbow.jpg) repeat fixed center; background-size: 280px;}
     #mainArea {position: relative; min-height: 100vh; background-color: rgb(255 249 204); padding: 20px;}
     /*.header, .body .sidebar, #mainArea, .component-container .component-box .component{border-radius: 5px;}*/
     .header.cus-header{
-      padding: 15px 15px 5px 15px;
+      padding: 10px 15px;
       background-color: #fff;
       position: fixed;
       width: 100vw;
@@ -50,7 +52,7 @@
     }
     .body .sidebar{
       background-color: #fff;
-      height: calc(100vh - 85px);
+      height: calc(100vh - 65px);
       position: relative;
     }
     .body .sidebar .component-type a{line-height: 35px; cursor: pointer; display: block; color: #111;}
@@ -89,7 +91,7 @@
     }
     .toggle{float: right; margin-right: 10px;}
 
-    .component-list{overflow: auto; height: calc(100vh - 120px); overflow-x: hidden;}
+    .component-list{overflow: auto; height: calc(100vh - 100px); overflow-x: hidden;}
 
     .fr{display: inline; float: right;display: flex; align-items: center;}
     .cus-siderbar:before{content: inherit;}
@@ -153,9 +155,10 @@
       transform: translateY(0);
     }
     a.base-setting{
-      padding: 5px 7px;
+      padding: 0px 7px;
       color: #666;
-      font-size: 16px;
+      font-size: 20px;
+      margin-top: -2px;
     }
     a.base-setting i{transition: all 1s;}
     a.base-setting:hover i{
@@ -172,8 +175,7 @@
 <div class="header cus-header">
   <div class="fr">
     <a href="/setting" target="_blank" class="base-setting" data-placement="bottom" data-toggle="tooltip" title="基础组件维护"><i class="fa fa-cog"></i></a>
-    <label class="checkbox" style="display: inline-flex; margin: 8px 5px;">
-      <span>显示组件边界虚线：</span>
+    <label style="display: inline-flex; margin: 0 5px;">
       <input type="checkbox" id="control" checked="checked" />
     </label>
     <button class="ivu-btn ivu-btn-primary" type="button" onclick="openSaveTemp()"><i class="fa fa-floppy-o mr5"></i>保存模板</button>
@@ -181,20 +183,18 @@
     <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="createCode(2)" style="margin-top: -2px;"><i class="fa fa-file-text mr5"></i>生成页面</button>
   </div>
 
-  <b class="f20 c111" style="font-size: 20px;">AUTOCODING</b>
+  <div class="logo" style="display: inline-block;">
+    <h3 class="f20 c111" style="font-size: 20px;"><i data-placement="bottom" data-toggle="tooltip" title="使用说明" class="fa fa-question-circle-o mr5" style="cursor: pointer;" onclick="openUseable()"></i>AUTOCODING</h3>
+  </div>
   <blockquote style="display: inline; padding: 0px 8px; margin-left: 5px;"></blockquote>
   <div style="display: inline; font-size: 20px;">
     <a herf="javascript:;" onclick="goBack()" data-placement="bottom" data-toggle="tooltip" title="上一步"><i class="fa fa-reply"></i></a>
     <a herf="javascript:;" class="ml10" onclick="goAhead()" data-placement="bottom" data-toggle="tooltip" title="下一步"><i class="fa fa-share"></i></a>
   </div>
-  <!-- 使用说明 -->
-  <div class="use-des dilb">
-    <small onclick="openUseable()" class="cc00 cp" style="color: red; cursor: pointer;"><i class="fa fa-snowflake-o mr5"></i>使用说明</small>
-  </div>
 </div>
 <div class="body">
   <div class="row">
-    <div id="app" class="col-lg-2 col-md-2" v-clack style="position: sticky; top: 85px; margin-right: 15px;">
+    <div id="app" class="col-lg-2 col-md-2" v-clack style="position: sticky; top: 65px; margin-right: 15px;">
       <div class="sidebar cus-siderbar" style="width: 100%;">
         <div class="component-type">
           <div class="row">
@@ -327,5 +327,7 @@
 <script src="/plugin/highlight/highlight.min.js"></script>
 <!-- dragpanel -->
 <script src="/plugin/dragpanel/dragpanel.js"></script>
+<!-- ios6switch -->
+<script src="/plugin/ios6switch/ios6switch.min.js"></script>
 </body>
 </html>
