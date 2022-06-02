@@ -133,6 +133,13 @@ function beautyCode(souceCode) {
  * 打开保存模板模态框
  */
 function openSaveTemp() {
+	if ($("#mainArea").html().trim() == "") {
+		vm.$message({
+			message: '无模板可生成',
+			type: 'warning'
+		});
+		return;
+	}
 	$("#tempModal").modal("show");
 }
 

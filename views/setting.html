@@ -139,8 +139,8 @@
                         </el-table-column>
                         <el-table-column prop="html" label="html结构" width="150">
                             <template slot-scope="scope">
-                                <el-popover placement="right" style= "max-width:1000px; overflow-x: auto;" trigger="click" @show="viewHtml(scope.$index)">
-                                    <pre><code :id="'codesBox' + scope.$index" class="language-objectivec">{{formatHtml(scope.row.html)}}</code></pre>
+                                <el-popover placement="right" style= "max-width:1000px; overflow-x: auto;" trigger="click" @show="viewHtml(scope.$index + '' + curPage)">
+                                    <pre><code :id="'codesBox' + scope.$index + curPage" :key="'codesBox' + scope.$index + curPage" class="language-objectivec">{{formatHtml(scope.row.html)}}</code></pre>
                                     <el-tag slot="reference" style="cursor: pointer;"><i class="fa fa-info-circle fa-fw"></i>点击查看详情</el-tag>
                                 </el-popover>
                             </template>
@@ -259,6 +259,7 @@
             el: "#app",
             data() {
                 return {
+                    curPage: 1, // 当前页
                     totalCount: 0, // 当前类型组件总条数
                     draged: false, // 是否被拖拽过
                     operateType: {
@@ -293,6 +294,7 @@
             },
             methods: {
                 selectType(index) { // 点击列表内容
+                    this.curPage = 1; // 重置当前页码
                     this.activeIndex = index;
                     this.$nextTick(function() {
                         // 查询当前类型组件总条数
@@ -500,6 +502,7 @@
                     })
                 },
                 handleCurrentChange(curPage) { // 换页触发
+                    this.curPage = curPage; // 记录当前页码
                     $.ajax({
                         url: "/setting/searchCompById",
                         method: "get",
