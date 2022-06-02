@@ -172,22 +172,20 @@
 <div class="header cus-header">
   <div class="fr">
     <a href="/setting" target="_blank" class="base-setting" data-placement="bottom" data-toggle="tooltip" title="基础组件维护"><i class="fa fa-cog"></i></a>
-    <label class="checkbox" style="display: inline-flex; margin: 8px 0;">
+    <label class="checkbox" style="display: inline-flex; margin: 8px 5px;">
       <span>显示组件边界虚线：</span>
       <input type="checkbox" id="control" checked="checked" />
     </label>
-    <div class="bar6" style="display: inline-flex;">
-      <input type="text" id="tempName" placeholder="请输入模板名称">
-      <button class="ivu-btn ivu-btn-primary" type="button" onclick="saveTemp()">保存模板</button>
-    </div>
-    <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="createCode()" style="margin-top: -2px;"><i class="fa fa-long-arrow-right mr5"></i>生成代码</button>
+    <button class="ivu-btn ivu-btn-primary" type="button" onclick="openSaveTemp()"><i class="fa fa-floppy-o mr5"></i>保存模板</button>
+    <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="createCode(1)" style="margin-top: -2px;"><i class="fa fa-cube mr5"></i>生成组件</button>
+    <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="createCode(2)" style="margin-top: -2px;"><i class="fa fa-file-text mr5"></i>生成页面</button>
   </div>
 
   <b class="f20 c111" style="font-size: 20px;">AUTOCODING</b>
   <blockquote style="display: inline; padding: 0px 8px; margin-left: 5px;"></blockquote>
   <div style="display: inline; font-size: 20px;">
-    <a herf="javascript:;" onclick="goBack()" data-placement="bottom" data-toggle="tooltip" title="上一步"><i class="fa fa-chevron-circle-left"></i></a>
-    <a herf="javascript:;" class="ml10" onclick="goAhead()" data-placement="bottom" data-toggle="tooltip" title="下一步"><i class="fa fa-chevron-circle-right"></i></a>
+    <a herf="javascript:;" onclick="goBack()" data-placement="bottom" data-toggle="tooltip" title="上一步"><i class="fa fa-reply"></i></a>
+    <a herf="javascript:;" class="ml10" onclick="goAhead()" data-placement="bottom" data-toggle="tooltip" title="下一步"><i class="fa fa-share"></i></a>
   </div>
   <!-- 使用说明 -->
   <div class="use-des dilb">
@@ -281,6 +279,35 @@
       <div class="modal-footer">
         <button type="button" class="ivu-btn ml10" data-dismiss="modal"><i class="fa fa-circle-o-notch fa-fw mr5"></i>关闭</button>
         <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="copyCodes()"><i class="fa fa-copy mr5"></i>一键复制</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 保存模板模态框 -->
+<div class="modal fade" id="tempModal" tabindex="-1" role="dialog" aria-labelledby="tempModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <span class="f18 c111"><i class="fa fa-pagelines mr5"></i>保存模板</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>模板类型：</label>
+          <select class="form-control ivu-input" id="tempType">
+            <option value="1">组件型</option>
+            <option value="2">页面型</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>模板名称：</label>
+          <input class="form-control ivu-input" id="tempName" type="text" placeholder="请输入模板名称" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="ivu-btn ml10" data-dismiss="modal"><i class="fa fa-circle-o-notch fa-fw mr5"></i>关闭</button>
+        <button type="button" class="ivu-btn ml10 ivu-btn-primary" onclick="saveTemp()"><i class="fa fa-copy mr5"></i>保存</button>
       </div>
     </div>
   </div>

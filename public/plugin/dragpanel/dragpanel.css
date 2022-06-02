@@ -1,10 +1,10 @@
 .custom-drag-control{
 		background: #fff;
 		width: 425px;
-		height: 390px;
+		height: 500px;
 		border-radius: 5px; 
 		position: fixed; 
-		bottom: calc(50vh - 195px);
+		bottom: calc(50vh - 250px);
 		right: calc(50vw - 212px);
 		z-index: 10000000;
 		box-shadow: rgba(0, 0, 0, 0.21) 0px 4px 16px 0px;
@@ -60,11 +60,12 @@
 	.custom-drag-control .body{
 		padding: 0 10px 0px 20px;
 		overflow: auto;
-		height: calc(100% - 110px);
+		height: calc(100% - 80px);
 		margin-right: 10px;
 		margin-top: 10px;
 		margin-bottom: 0;
 		overflow-x: hidden;
+		text-align: justify;
 	}
 	.custom-drag-control .drager {
 		position: absolute;

@@ -116,7 +116,7 @@
                                             <i class="fa fa-pencil-square" @click.stop="editType(index)"></i>
                                         </el-tooltip>
                                         <el-tooltip class="operate" effect="dark" content="删除" placement="top">
-                                            <i class="fa fa-times-circle" @click.stop="delType(index)"></i>
+                                            <i class="fa fa-trash" @click.stop="delType(index)"></i>
                                         </el-tooltip>
                                     </div>
                                 </li>
@@ -165,7 +165,7 @@
                                     <el-button round type="warning" @click.native.prevent="editComp(scope.$index)" size="small" icon="fa fa-edit"></el-button>
                                 </el-tooltip>
                                 <el-tooltip content="删除组件" placement="top">
-                                    <el-button round type="danger" @click.native.prevent="delComp(scope.$index)" size="small" icon="fa fa-times"></el-button>
+                                    <el-button round type="danger" @click.native.prevent="delComp(scope.$index)" size="small" icon="fa fa-trash"></el-button>
                                 </el-tooltip>
                             </template>
                         </el-table-column>

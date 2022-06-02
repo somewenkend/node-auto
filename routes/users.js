@@ -40,6 +40,7 @@ router.post('/saveTemp', async function(req, res, next) {
       name: req.body.name,
       topDomIds: req.body.topDomIds,
       self: req.body.self,
+      type: req.body.type,
       createTime: common.formatTime(new Date()),
       updateTime: common.formatTime(new Date()),
       del: 0

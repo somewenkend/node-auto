@@ -1,7 +1,7 @@
 /**
  * 生成代码
  */
-function createCode(){
+function createCode(type){
 	// 生成代码时，取消主编辑区的编辑状态
 	cancelActive();
 	var $htmlStr = $("#mainArea").clone();
@@ -37,8 +37,9 @@ function createCode(){
 	
 	if ($htmlStr.html().trim() != "") {
 
-
-var frame = `<!DOCTYPE html>
+		var frame = "" // 代码结构
+		if(type == 2) { // 生成页面级代码
+			frame = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -82,6 +83,9 @@ var frame = `<!DOCTYPE html>
 </body>
 </html>
 `;
+		} else { // 生成组件代码
+			frame = $htmlStr.html().replace("\n", '');
+		}
 
 		var beautyHtmlStr = html_beautify(frame, {
 			inline: ["i"]
@@ -126,6 +130,13 @@ function beautyCode(souceCode) {
 }
 
 /**
+ * 打开保存模板模态框
+ */
+function openSaveTemp() {
+	$("#tempModal").modal("show");
+}
+
+/**
  * 保存模板
  */
 function saveTemp() {
@@ -145,7 +156,7 @@ function saveTemp() {
 	$.ajax({
 		url: "/users/saveTemp",
 		method: "post",
-		data: {id: guid(), self: html, name: name, topDomIds: topDomIds.join()},
+		data: {id: guid(), self: html, name: name, topDomIds: topDomIds.join(), type: $("#tempType").val()},
 		success: function (data) {
 			if (data.success) {
 				vm.$message({

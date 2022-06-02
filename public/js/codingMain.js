@@ -12,7 +12,12 @@ var vm = new Vue({
 				"name": "DIY库",
 				"components": [
 					{
-						"name": "模板",
+						"name": "组件型模板",
+						"icon": "fa fa-hand-o-right fa-fw",
+						"data": []
+					},
+					{
+						"name": "页面型模板",
 						"icon": "fa fa-hand-o-right fa-fw",
 						"data": []
 					}
@@ -64,10 +69,12 @@ var vm = new Vue({
 		}).then(function () {
 			searchTemp().then(data => {
 				data.forEach(item => {
-					vm.dataList[1].components[0].data.push({
+					// 组件型模板还是页面型模板
+					var index = item.type == 1 ? 0 : 1;
+					vm.dataList[1].components[index].data.push({
 						id: item.id,
 						componentName: item.name,
-						componentIcon: "fa fa-linode",
+						componentIcon: index == 0 ? "fa fa-cube" : "fa fa-file-text",
 						isTemp: true
 					});
 				});
@@ -185,10 +192,14 @@ $(document).ready(function() {
 	// 使用说明dragpanel初始化
 	var description = `
 			<p>1、从左边组件库或DIV库中拖出组件到右边主编辑区。</p>
-			<p>2、组件或模板可通过单击激活，从而为其添加子组件；点击其他区域可取消激活状态。</p>
+			<p>2、组件或模板可通过单击激活，从而为其添加子组件或者将其删除；点击其他区域可取消激活状态。</p>
 			<p>3、鼠标右单击弹出属性编辑模态框，支持编辑各种组件的基础属性。</p>
-			<p>4、输入模板名称后点击“保存模板”按钮，可将当前编辑区的内容设置为固定模板，保存在DIY库中。</p>
-			<p>5、点击“生成代码”按钮可查看当前编辑区内容对应的html代码。</p>
+			<p>4、点击”上一步“或”下一步“可实现操作的回退或者前进。</p>
+			<p>5、点击“<i class="fa fa-cog" style="color: #666;"></i>”跳转到基础组件维护页面。</p>
+			<p>6、切换“显示边界”可以使组件显示/隐藏虚线轮廓。</p>
+			<p>7、点击“保存模板”弹出模态框，可将当前编辑区的内容保存为“组件型模板”或者“页面型模板”，保存在DIY库中。</p>
+			<p>8、点击“生成组件”，可生成当前编辑区内容的html结构。</p>
+			<p>9、点击“生成页面”，可生成当前编辑区内容和html文件其他必要元素组合成的完整页面结构。</p>
 		`;
 	new DragPanel("description", "使用说明", description);
 	// 开启代码高亮
