@@ -32,7 +32,7 @@
 		var curEl = $(el).closest("." + CONST_VARIABLE.AUTOCODING_EL);
 		curEl.css({"height": curEl[0].offsetHeight, "width": curEl[0].offsetWidth});
 		curEl.find("." + CONST_VARIABLE.AUTOCODING_EL).each(function() {
-			$(this).css({"height": curEl.height(), "width": curEl.width()});
+			$(this).css({"height": $(this).height(), "width": $(this).width()});
 		});
 		// 移除后创建操作对象并将移除操作对象添加进操作栈[添加元素操作、移除元素操作]
 		// 添加元素操作
@@ -423,7 +423,7 @@
             var translateY = self.getPosition().y;
             switch (self.drager) {
                 case "top":
-					if (this.option.dragDirect.indexOf("t") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("t") > -1) {
 						if ((self.height - pos.y) >= self.minSide) {
 							self.height -= pos.y;
 							this.el.style["height"] = self.height + 'px';
@@ -432,7 +432,7 @@
 					}
                     break;
                 case "right":
-					if (this.option.dragDirect.indexOf("r") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("r") > -1) {
 						if ((self.width + pos.x) >= self.minSide) {
 							self.width += pos.x;
 							this.el.style["width"] = self.width + 'px';
@@ -440,7 +440,7 @@
 					}
                     break;
                 case "bottom":
-					if (this.option.dragDirect.indexOf("b") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("b") > -1) {
 						if ((self.height + pos.y) >= self.minSide) {
 							self.height += pos.y;
 							this.el.style["height"] = self.height + 'px';
@@ -448,7 +448,7 @@
 					}
                     break;
                 case "left":
-					if (this.option.dragDirect.indexOf("l") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("l") > -1) {
 						if ((self.width - pos.x) >= self.minSide) {
 							self.width -= pos.x;
 							this.el.style["width"] = self.width + 'px';
@@ -457,7 +457,7 @@
 					}
                     break;
                 case "topLeft":
-					if (this.option.dragDirect.indexOf("tl") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("tl") > -1) {
 						if ((self.width - pos.x) >= self.minSide) {
 							self.width -= pos.x;
 							this.el.style["width"] = self.width + 'px';
@@ -474,7 +474,7 @@
 					}
                     break;
                 case "topRight":
-					if (this.option.dragDirect.indexOf("tr") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("tr") > -1) {
 						if ((self.height - pos.y) >= self.minSide) {
 							self.height -= pos.y;
 							this.el.style["height"] = self.height + 'px';
@@ -487,7 +487,7 @@
 					}
                     break;
                 case "bottomLeft":
-					if (this.option.dragDirect.indexOf("bl") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("bl") > -1) {
 						if ((self.width - pos.x) >= self.minSide) {
 							self.width -= pos.x;
 							this.el.style["width"] = self.width + 'px';
@@ -500,7 +500,7 @@
 					}
                     break;
                 case "bottomRight":
-					if (this.option.dragDirect.indexOf("br") > -1) {
+					if (!this.option.dragDirect || this.option.dragDirect.indexOf("br") > -1) {
 						if ((self.width + pos.x) >= self.minSide) {
 							self.width += pos.x;
 							this.el.style["width"] = self.width + 'px';
