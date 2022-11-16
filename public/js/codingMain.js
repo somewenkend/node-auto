@@ -499,12 +499,40 @@ function editComponent(componentName) {
 			        <label>组件name：</label>
 			        <input class="form-control ivu-input" type="text" data-attr="name" placeholder="请输入组件name" />
 			    </div>
+			    <div class="form-group" data-type="parent">
+			        <label>整体calss：</label>
+			        <input class="form-control ivu-input" type="text" data-attr="class" placeholder="请输入class" />
+			    </div>
+			    <div class="form-group" data-type="brother">
+			        <label>标签class：</label>
+			        <input class="form-control ivu-input" type="text" data-attr="class" placeholder="请输入请输入class" />
+			    </div>
 	        `;
         $("#extraAttr").append(nameHtml);
-        
-        // 将组件当前的name属性值取出
-        var name = $effectEl.attr("name");
-        $("#extraAttr").find("[data-attr='name']").val(name);
+
+		$("#extraAttr").children().each(function() {
+			var type = $(this).data("type"); // 操作哪一层元素【以表单元素为中心，辐射整个结构】
+			var attr = $(this).find("input").data("attr");
+			switch(type) {
+				case "parent": // 父级
+					var curAttr = $effectEl.closest(".autocoding-el").attr(attr);
+					if (attr == "class") {
+						curAttr = curAttr.replace(" autocoding-el", "");
+					}
+					$(this).find("input").val(curAttr);
+					break;
+				case "brother": // 兄弟
+					$(this).find("input").val($effectEl.closest("div").prev("div").attr(attr));
+					break;
+				case "self": // 自己
+					$(this).find("input").val($effectEl.attr(attr));
+					break;
+				default: // 默认自己
+					// 将组件当前的属性值取出
+					$(this).find("input").val($effectEl.attr(attr));
+					break;
+			}
+		});
 	    break;
 	case "laytable":
 		var filterHtml =
@@ -573,7 +601,25 @@ function ensureAttr() {
 	// 确认其他属性
 	$("#extraAttr").children().each(function() {
 		if ($(this).find("input").val().trim()) {
-			$effectEl.attr($(this).find("input").data("attr"), $(this).find("input").val());
+			var type = $(this).data("type"); // 操作哪一层元素【以表单元素为中心，辐射整个结构】
+			switch(type) {
+				case "parent": // 父级
+					var curAttr = $(this).find("input").val();
+					if ($(this).find("input").data("attr") == "class") {
+						curAttr += " autocoding-el";
+					}
+					$effectEl.closest(".autocoding-el").attr($(this).find("input").data("attr"), curAttr);
+					break;
+				case "brother": // 兄弟
+					$effectEl.closest("div").prev("div").attr($(this).find("input").data("attr"), $(this).find("input").val());
+					break;
+				case "self": // 自己
+					$effectEl.attr($(this).find("input").data("attr"), $(this).find("input").val());
+					break;
+				default: // 默认自己
+					$effectEl.attr($(this).find("input").data("attr"), $(this).find("input").val());
+					break;
+			}
 		}
 	});
 	// 关闭模态框
